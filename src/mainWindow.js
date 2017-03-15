@@ -1,64 +1,15 @@
- class Views {
-       const webview = document.createElement('webview');
-
-    constructor() {
-      this.views = []
-    }
-
-    
-}
-
-class Column{
-
-}
+const electron = require('electron');
+const ipc = electron.ipcRenderer;
 
 
+ipc.on('edit-mode',(evt,active)=>{
+  mainView._data.isInEditMode = active;
+  console.log("toto"+active);
+});
 
-class Row{
-
-  constructor(parent) {
-      this.parentColumn = parent;
-      
-            this.columns = []
-        }
-
-addColumn(){
-    
-}
-
-move(direction){
-
-}
-
-remove()
-{
-
-}
-}
-
-class View{
-
-constructor(){
-    this.tabs = [],
-    this.rollingTime = 10
-
-}
-remove(){
-
-}
-
-
-}
-
-
-class Tab {
-
-
-    constructor(){
-this.url,
-this.needRefresh,
-this.contentSelector
-}
-
-
-}
+var mainView = new Vue({
+  el:'#mainView',
+  data:{
+    isInEditMode : true
+  }
+});

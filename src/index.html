@@ -2,21 +2,23 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
-    <link rel="stylesheet" href="../node_modules/material-design-lite/material.min.css">
-    <script src="../node_modules/material-design-lite/material.min.js"></script>
+    <title>Eletron Wallboard</title>
+    <link rel="stylesheet" href="../node_modules/material-design-lite/material.css">
+    <script src="../node_modules/material-design-lite/material.js"></script>
+    <script src="../node_modules/vue/dist/vue.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="main.less" />
+
   </head>
   <body>
+<div id="mainView">
 
 
-
-    <button class="mdl-snackbar__action mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
+    <button v-if="isInEditMode" class="mdl-snackbar__action mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
   <i class="material-icons">add row</i>
 </button>
+
 </div>
-
-
+    <script src="./mainWindow.js"></script>
   </body>
 </html>

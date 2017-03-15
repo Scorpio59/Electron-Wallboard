@@ -17,5 +17,6 @@
         "es6": true,
         "node": true,
         "browser": true
-    }
+    },
+    "validate": [ "javascript", "javascriptreact", { "language": "html", "autoFix": true } ]
 }
