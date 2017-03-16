@@ -1,3 +1,6 @@
+//CSS
+require('material-design-lite');
+const Vue = require('vue');
 const electron = require('electron');
 const ipc = electron.ipcRenderer;
 
