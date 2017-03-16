@@ -13,28 +13,33 @@ function editMode(active){
 function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({width: 1200, height: 800});
-  const template= [
+  const template = [
     {
       label: 'Edit',
-      submenu:[{
-        label: 'Edition',
-        click: () => editMode(true),
-        accelerator: 'F9'
-      },{
-        label: 'Readonly',
-        click: () => editMode(false),
-        accelerator: 'F8'
-      }]
+      submenu:[
+        {
+          label: 'Edition',
+          click: () => editMode(true),
+          accelerator: 'F9'
+        },
+        {
+          label: 'Readonly',
+          click: () => editMode(false),
+          accelerator: 'F8'
+        }
+      ]
     },
     {
       type:'separator'
-    },{
+    },
+    {
       role:'togglefullscreen',
     }
   ];
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
   // and load the index.html of the app.
+  // TODO This is the problem, we need a modular page loading.
   win.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',

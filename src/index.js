@@ -7,7 +7,7 @@ const ipc = electron.ipcRenderer;
 
 ipc.on('edit-mode',(evt,active)=>{
   mainView._data.isInEditMode = active;
-  console.log("toto"+active);
+  console.log("toto "+active);
 });
 
 var mainView = new Vue({

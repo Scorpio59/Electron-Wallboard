@@ -2,18 +2,27 @@ var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports= {
-
-  entry: './src/main.js',
+module.exports = {
+  resolve: {
+    modules: [
+      './src',
+      './node_modules',
+    ],
+    alias: {vue: 'vue/dist/vue.js'}
+  },
+  entry: {
+    index: 'index.js',
+    main: 'main.js'
+  },
   output: {
-    filename: 'bundle.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, 'dist')
   },
-  plugins: [new HtmlWebpackPlugin()],
+  plugins: [], //new HtmlWebpackPlugin()
   module: {
     rules: [{
       test: /\.html$/,
-      use: [ {
+      use: [{
         loader: 'html-loader',
         options: {
           minimize: true
@@ -21,5 +30,6 @@ module.exports= {
       }],
     }]
   },
+  devtool: "cheap-eval-source-map",
   target: 'electron'
 };
