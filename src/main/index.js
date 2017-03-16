@@ -6,13 +6,16 @@ const url = require('url');
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
 
-function editMode(active){
+//TODO Move
+function editMode(active) {
   win.webContents.send('edit-mode', active);
 }
 
 function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({width: 1200, height: 800});
+
+
   const template = [
     {
       label: 'Edit',
@@ -38,13 +41,19 @@ function createWindow () {
   ];
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
+
+
   // and load the index.html of the app.
   // TODO This is the problem, we need a modular page loading.
+  /*
   win.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
     slashes: true
   }));
+  */
+
+  win.loadURL(`file://${__dirname}/index.html`);
 
   // Open the DevTools.
   win.webContents.openDevTools();

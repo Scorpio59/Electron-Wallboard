@@ -3,6 +3,12 @@
   <head>
     <meta charset="UTF-8">
     <title>Eletron Wallboard</title>
+    <% if (htmlWebpackPlugin.options.appModules) { %>
+      <!-- Add `app/node_modules` to global paths so `require` works properly in development -->
+      <script>
+        require('module').globalPaths.push('<%= htmlWebpackPlugin.options.appModules.replace(/\\/g, '\\\\') %>')
+      </script>
+    <% } %>
     <link rel="stylesheet" href="../node_modules/material-design-lite/material.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="main.less" />
@@ -13,6 +19,5 @@
           <i class="material-icons">add row</i>
         </button>
     </div>
-    <script src="./index.js"></script>
   </body>
 </html>
