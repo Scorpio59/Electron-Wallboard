@@ -26,7 +26,8 @@ module.exports = {
       dry: true
     }),
     new WebpackNotifierPlugin({
-      skipFirstNotification: true
+      skipFirstNotification: true,
+      alwaysNotify: true
     }),
     new HtmlWebpackPlugin({
       template: 'src/index.ejs'
