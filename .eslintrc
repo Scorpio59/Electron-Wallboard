@@ -2,7 +2,7 @@
     "extends": "eslint:recommended",
     "parser": "babel-eslint",
     "rules": {
-        "strict": 0,
+        "strict": 1,
         "indent": [
             2,
             2

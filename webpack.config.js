@@ -1,37 +1,36 @@
 var path = require('path');
 //var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+//var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 var WebpackNotifierPlugin = require('webpack-notifier');
 
 module.exports = {
   resolve: {
     modules: [
-      './src',
+      './app/src',
       './node_modules',
     ],
     extensions: ['.js', '.vue', '.json'/*, '.css', '.node'*/],
     alias: {vue: 'vue/dist/vue.js'}
   },
   entry: {
-    main: 'main/index.dev.js',
-    renderer: 'renderer/index.js'
+    index: 'index.js'
   },
   output: {
-    filename: '[name].js',
-    path: 'dist'
+    filename: 'bundle.js',
+    path: 'app/dist'
   },
   plugins: [
-    new CleanWebpackPlugin(['dist'], {
+    new CleanWebpackPlugin(['app/dist'], {
       dry: true
     }),
     new WebpackNotifierPlugin({
       skipFirstNotification: true,
       alwaysNotify: true
     }),
-    new HtmlWebpackPlugin({
+    /*new HtmlWebpackPlugin({
       template: 'src/index.ejs'
-    })
+    })*/
   ],
   module: {
     rules: [
@@ -100,7 +99,7 @@ module.exports = {
   },
   devtool: "cheap-eval-source-map",
   watchOptions: {
-    ignored: /node_modules/
+    ignored: /node_modules|resources|\.git|\.vscode/
   },
   target: 'electron'
 };

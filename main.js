@@ -1,6 +1,7 @@
-import {app, BrowserWindow, Menu} from 'electron';
-import url from 'url';
-import path from 'path';
+const electron = require('electron');
+const {app, BrowserWindow, Menu} = electron;
+const url = require('url');
+const path = require('path');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -44,7 +45,7 @@ function createWindow () {
 
   // and load the index.html of the app.
   win.loadURL(url.format({
-    pathname: path.join(__dirname, 'dist/index.html'),
+    pathname: path.join(__dirname, 'app/index.html'),
     protocol: 'file:',
     slashes: true
   }));
