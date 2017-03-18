@@ -30,7 +30,12 @@ function createWindow () {
       type:'separator'
     },{
       role:'togglefullscreen',
+    },
+    {
+      role:'reload',
+      accelerator:'F5'
     }
+
   ];
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);

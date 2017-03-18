@@ -5,7 +5,6 @@
     <title>Eletron Wallboard</title>
     <link rel="stylesheet" href="../node_modules/material-design-lite/material.css">
     <script src="../node_modules/material-design-lite/material.js"></script>
-    <script src="../node_modules/vue/dist/vue.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="main.less" />
 
@@ -13,9 +12,11 @@
   <body>
 <div id="mainView">
 
-
-    <button v-if="isInEditMode" class="mdl-snackbar__action mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
-  <i class="material-icons">add row</i>
+  <todo-item v-for="column in columns" v-bind:src="column.src"></todo-item>
+<button v-if="isInEditMode"
+  v-on:click="addColumn"
+ class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect ">
+  <i class="material-icons">add columns</i>
 </button>
 
 </div>
