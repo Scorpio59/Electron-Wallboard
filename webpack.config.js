@@ -1,36 +1,39 @@
 var path = require('path');
-//var webpack = require('webpack');
-//var HtmlWebpackPlugin = require('html-webpack-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 var WebpackNotifierPlugin = require('webpack-notifier');
+
+//const production = process.argv.indexOf('-p') !== -1;
 
 module.exports = {
   resolve: {
     modules: [
-      './app/src',
+      './src',
       './node_modules',
     ],
     extensions: ['.js', '.vue', '.json'/*, '.css', '.node'*/],
     alias: {vue: 'vue/dist/vue.js'}
   },
   entry: {
-    index: 'index.js'
+    bundle: 'index.js',
+    //main: production ? 'main.js' : 'main.dev.js'
   },
   output: {
-    filename: 'bundle.js',
-    path: 'app/dist'
+    filename: '[name].js',
+    path: 'dist'
   },
   plugins: [
-    new CleanWebpackPlugin(['app/dist'], {
+    new CleanWebpackPlugin(['dist'], {
       dry: true
     }),
     new WebpackNotifierPlugin({
       skipFirstNotification: true,
       alwaysNotify: true
     }),
-    /*new HtmlWebpackPlugin({
-      template: 'src/index.ejs'
-    })*/
+    new HtmlWebpackPlugin({
+      template: 'index.ejs',
+      //excludeChunks: ['main']
+    })
   ],
   module: {
     rules: [

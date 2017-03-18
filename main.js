@@ -1,5 +1,7 @@
 const electron = require('electron');
 const {app, BrowserWindow, Menu} = electron;
+
+//import {app, BrowserWindow, Menu} from 'electron';
 const url = require('url');
 const path = require('path');
 
@@ -45,7 +47,7 @@ function createWindow () {
 
   // and load the index.html of the app.
   win.loadURL(url.format({
-    pathname: path.join(__dirname, 'app/index.html'),
+    pathname: path.join(__dirname, 'dist/index.html'),
     protocol: 'file:',
     slashes: true
   }));

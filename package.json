@@ -4,10 +4,11 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "build": "webpack --config webpack.config.js",
+    "build": "webpack",
+    "build:prod": "webpack -p",
     "start": "electron .",
-    "debug": "electron ./debug.js",
-    "watch": "webpack -w"
+    "watch": "webpack -w",
+    "dev": "electron main.dev.js"
   },
   "repository": {
     "type": "git",

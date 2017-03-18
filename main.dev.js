@@ -1,7 +1,11 @@
+const path = require('path');
+
 // Install `electron-debug` with `devtron`
 require('electron-debug')({ showDevTools: true });
 
-require('electron-reload')(__dirname);
+//TODO Discuss a compromise here
+require('electron-reload')(path.join(__dirname, 'dist'));
+//require('electron-hot')();
 
 // Install `vue-devtools`
 require('electron').app.on('ready', () => {
