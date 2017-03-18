@@ -1,4 +1,10 @@
+<<<<<<< HEAD:src/mainWindow.js
 require('./components/webView');
+=======
+//CSS
+require('material-design-lite');
+const Vue = require('vue');
+>>>>>>> 57f3aca098e9361788e66157c59d92a186a42083:src/renderer/index.js
 const electron = require('electron');
 const Vue = require('vue/dist/vue.js');
 const ipc = electron.ipcRenderer;
@@ -6,7 +12,7 @@ const ipc = electron.ipcRenderer;
 
 ipc.on('edit-mode',(evt,active)=>{
   mainView._data.isInEditMode = active;
-  console.log("toto"+active);
+  console.log("toto "+active);
 });
 
 

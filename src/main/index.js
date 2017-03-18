@@ -1,34 +1,40 @@
-const {app, BrowserWindow,Menu} = require('electron');
-const path = require('path');
-const url = require('url');
+import {app, BrowserWindow, Menu} from 'electron';
+import url from 'url';
+import path from 'path';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
 
-function editMode(active){
+//TODO Move
+function editMode(active) {
   win.webContents.send('edit-mode', active);
 }
 
 function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({width: 1200, height: 800});
-  const template= [
+
+  const template = [
     {
       label: 'Edit',
-      submenu:[{
-        label: 'Edition',
-        click: () => editMode(true),
-        accelerator: 'F9'
-      },{
-        label: 'Readonly',
-        click: () => editMode(false),
-        accelerator: 'F8'
-      }]
+      submenu:[
+        {
+          label: 'Edition',
+          click: () => editMode(true),
+          accelerator: 'F9'
+        },
+        {
+          label: 'Readonly',
+          click: () => editMode(false),
+          accelerator: 'F8'
+        }
+      ]
     },
     {
       type:'separator'
-    },{
+    },
+    {
       role:'togglefullscreen',
     },
     {
@@ -37,19 +43,24 @@ function createWindow () {
     }
 
   ];
+
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
+
   // and load the index.html of the app.
   win.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
+    pathname: path.join(__dirname, 'dist/index.html'),
     protocol: 'file:',
     slashes: true
   }));
 
+  //See index.dev.js
+
   // Open the DevTools.
-  win.webContents.openDevTools();
+  //win.webContents.openDevTools();
+
   //add the vuejs extension
-  BrowserWindow.addDevToolsExtension("resources/vuejs-devtool");
+  //BrowserWindow.addDevToolsExtension('resources/vuejs-devtool');
 
   // Emitted when the window is closed.
   win.on('closed', () => {

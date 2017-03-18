@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Eletron Wallboard</title>
+    <% if (htmlWebpackPlugin.options.appModules) { %>
+      <!-- Add `app/node_modules` to global paths so `require` works properly in development -->
+      <script>
+        require('module').globalPaths.push('<%= htmlWebpackPlugin.options.appModules.replace(/\\/g, '\\\\') %>')
+      </script>
+    <% } %>
+    <link rel="stylesheet" href="../node_modules/material-design-lite/material.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="main.less" />
+  </head>
+  <body>
+    <div id="mainView">
+        <button v-if="isInEditMode" class="mdl-snackbar__action mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
+          <i class="material-icons">add row</i>
+        </button>
+    </div>
+  </body>
+</html>

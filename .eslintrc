@@ -18,5 +18,8 @@
         "node": true,
         "browser": true
     },
-    "validate": [ "javascript", "javascriptreact", { "language": "html", "autoFix": true } ]
+    "validate": [ "javascript", "javascriptreact", { "language": "html", "autoFix": true } ],
+    "plugins": [
+        "html"
+    ]
 }
