@@ -1,6 +1,4 @@
 const {app, BrowserWindow, Menu} = require('electron');
-const path = require('path');
-const url = require('url');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -12,6 +10,7 @@ function editMode(active) {
 }
 
 function createWindow () {
+  console.log(app, BrowserWindow, Menu);
   // Create the browser window.
   win = new BrowserWindow({width: 1200, height: 800});
 
@@ -39,9 +38,11 @@ function createWindow () {
       role:'togglefullscreen',
     }
   ];
+  console.log('B');
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
 
+  console.log('C');
 
   // and load the index.html of the app.
   // TODO This is the problem, we need a modular page loading.
@@ -53,12 +54,16 @@ function createWindow () {
   }));
   */
 
-  win.loadURL(`file://${__dirname}/index.html`);
+  //win.loadURL(`file://${__dirname}dist/index.html`);
+  win.loadURL('index.html');
+  console.log('D');
 
   // Open the DevTools.
   win.webContents.openDevTools();
+
   //add the vuejs extension
-  BrowserWindow.addDevToolsExtension("resources/vuejs-devtool");
+  //See index.dev.js
+  //BrowserWindow.addDevToolsExtension('resources/vuejs-devtool');
 
   // Emitted when the window is closed.
   win.on('closed', () => {

@@ -2,6 +2,7 @@ var path = require('path');
 //var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
+var WebpackNotifierPlugin = require('webpack-notifier');
 
 module.exports = {
   resolve: {
@@ -23,6 +24,9 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(['dist'], {
       dry: true
+    }),
+    new WebpackNotifierPlugin({
+      skipFirstNotification: true
     }),
     new HtmlWebpackPlugin({
       template: 'src/index.ejs'
@@ -94,5 +98,8 @@ module.exports = {
     ],
   },
   devtool: "cheap-eval-source-map",
+  watchOptions: {
+    ignored: /node_modules/
+  },
   target: 'electron'
 };
