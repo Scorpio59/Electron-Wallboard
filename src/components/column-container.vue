@@ -1,5 +1,5 @@
 <template>
-<div id="column-container" class="column"  :class="[isInEditMode ? 'edit':'']" >
+<section id="column-container" class="column"  :class="[isInEditMode ? 'edit':'']" style="position:relative">
 
 
 
@@ -9,20 +9,20 @@
   </button>
   <div class="mdl-tooltip mdl-tooltip--large" data-mdl-for="delete-column-btn">Delete the column</div>
 
-
+<div>
   <web-view
           v-for="(row,index) in rows"
          v-bind:is-in-edit-mode="isInEditMode"
          v-on:delete="deleteRow"
          v-bind:key="index">
   </web-view>
-
+</div>
   <button v-if="isInEditMode" v-on:click="addRow" id="add-row-btn" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button-add-row">
     <i class="material-icons">add</i>
   </button>
   <div class="mdl-tooltip mdl-tooltip--top mdl-tooltip--large" data-mdl-for="add-row-btn">Add a row</div>
 
-</div>
+</section>
 </template>
 
 <script>
@@ -71,15 +71,15 @@ export default {
 
 button.delete {
   top: 10px;
-  position: relative;
-  float: right;
+  position: absolute;
   right: 10px;
 }
 
 .button-add-row{
-  top: 90%;
-  position: relative;
-  left: 45%;
+  bottom: 0;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 </style>
