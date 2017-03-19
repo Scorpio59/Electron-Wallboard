@@ -1,5 +1,5 @@
 <template>
-<div id="column-container" class="column"  :class="[isInEditMode ? 'edit':'']" ></div>
+<div id="column-container" class="column"  :class="[isInEditMode ? 'edit':'']" >fxf</div>
 </template>
 
 <script>

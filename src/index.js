@@ -1,7 +1,6 @@
 //CSS
 require('material-design-lite');
-require('../components/web-view');
-require('../components/column-container');
+
 const electron = require('electron');
 const Vue = require('vue/dist/vue.js');
 const ipc = electron.ipcRenderer;
@@ -12,7 +11,7 @@ ipc.on('edit-mode',(evt,active)=>{
   console.log("Receive signal to editmode: "+active);
 });
 
-Vue.component('column-container', require('../components/column-container.vue'));
+Vue.component('column-container', require('./components/column-container.vue'));
 
 var mainView = new Vue({
   el:'#mainView',
