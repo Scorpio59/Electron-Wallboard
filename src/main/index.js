@@ -49,7 +49,7 @@ function createWindow () {
 
   // and load the index.html of the app.
   win.loadURL(url.format({
-    pathname: path.join(__dirname, 'dist/index.html'),
+    pathname: 'E:/Code sample/Electron-Wallboard/dist/index.html',
     protocol: 'file:',
     slashes: true
   }));

@@ -1,10 +1,7 @@
-<<<<<<< HEAD:src/mainWindow.js
-require('./components/webView');
-=======
 //CSS
 require('material-design-lite');
-const Vue = require('vue');
->>>>>>> 57f3aca098e9361788e66157c59d92a186a42083:src/renderer/index.js
+require('../components/web-view');
+require('../components/column-container');
 const electron = require('electron');
 const Vue = require('vue/dist/vue.js');
 const ipc = electron.ipcRenderer;
@@ -12,15 +9,10 @@ const ipc = electron.ipcRenderer;
 
 ipc.on('edit-mode',(evt,active)=>{
   mainView._data.isInEditMode = active;
-  console.log("toto "+active);
+  console.log("Receive signal to editmode: "+active);
 });
 
-
-
-Vue.component('todo-item', {
-  props: ['webview'],
-  template: '<webview></webview>'
-});
+Vue.component('column-container', require('../components/column-container.vue'));
 
 var mainView = new Vue({
   el:'#mainView',
