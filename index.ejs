@@ -28,13 +28,22 @@
          <column-container
                  v-for="column in columns"
                 v-bind:is-in-edit-mode="isInEditMode"
+                v-on:delete="deleteColumn"
                     v-bind:key="column.id">
          </column-container>
-                 </div>
+      </div>
 
-        <button v-if="isInEditMode" v-on:click="addColumn" class="mdl-snackbar__action mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect button-add-column">
+        <button v-if="isInEditMode" v-on:click="addColumn" id="add-col-btn" class="mdl-snackbar__action mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect button-add-column">
           <i class="material-icons">add row</i>
         </button>
+        <div class="mdl-tooltip mdl-tooltip--top mdl-tooltip--large" data-mdl-for="add-col-btn">
+      Add a column
+      </div>
+        <div id="message-toast" class="mdl-js-snackbar mdl-snackbar">
+            <div class="mdl-snackbar__text"></div>
+            <button class="mdl-snackbar__action" type="button"></button>
+      </div>
     </div>
+
   </body>
 </html>

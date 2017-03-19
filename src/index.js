@@ -8,21 +8,37 @@ const ipc = electron.ipcRenderer;
 
 ipc.on('edit-mode',(evt,active)=>{
   mainView._data.isInEditMode = active;
+  mainView.showToastedMessage(active ? "Edition mode": "Display mode");
   console.log("Receive signal to editmode: "+active);
 });
 
 Vue.component('column-container', require('./components/column-container.vue'));
+Vue.component('web-view', require('./components/web-view.vue'));
 
 var mainView = new Vue({
   el:'#mainView',
   data:{
     isInEditMode : true,
-    columns:[{src:"http://google.fr"}],
+    columns:[{}],
 
   },
   methods: {
     addColumn: function () {
-      this.columns.push({src:"http://google.fr"});
+      this.columns.push({});
+    },
+    deleteColumn: function (indexOfItem) {
+      if(this.columns.length > 1)
+      {
+        this.columns.splice(indexOfItem, 1);
+      }else {
+        this.showToastedMessage("You can't delete the last column");
+      }
+    },
+    showToastedMessage: function(message){
+      var data = {
+        message: message,
+        timeout: 800};
+      document.querySelector('#message-toast').MaterialSnackbar.showSnackbar(data);
     }
   }
 });
