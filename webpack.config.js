@@ -1,8 +1,9 @@
 var path = require('path');
-//var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 var WebpackNotifierPlugin = require('webpack-notifier');
+
+//const production = process.argv.indexOf('-p') !== -1;
 
 module.exports = {
   resolve: {
@@ -14,8 +15,8 @@ module.exports = {
     alias: {vue: 'vue/dist/vue.js'}
   },
   entry: {
-    main: 'main/index.dev.js',
-    renderer: 'renderer/index.js'
+    bundle: 'index.js',
+    //main: production ? 'main.js' : 'main.dev.js'
   },
   output: {
     filename: '[name].js',
@@ -30,7 +31,8 @@ module.exports = {
       alwaysNotify: true
     }),
     new HtmlWebpackPlugin({
-      template: 'src/index.ejs'
+      template: 'index.ejs',
+      //excludeChunks: ['main']
     })
   ],
   module: {
@@ -109,7 +111,7 @@ module.exports = {
   },
   devtool: "cheap-eval-source-map",
   watchOptions: {
-    ignored: /node_modules/
+    ignored: /node_modules|resources|\.git|\.vscode/
   },
   target: 'electron'
 };
