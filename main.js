@@ -1,7 +1,7 @@
 const electron = require('electron');
-const {app, BrowserWindow, Menu} = electron;
+const { app, BrowserWindow, Menu } = electron;
 
-//import {app, BrowserWindow, Menu} from 'electron';
+// import {app, BrowserWindow, Menu} from 'electron';
 const url = require('url');
 const path = require('path');
 
@@ -9,19 +9,19 @@ const path = require('path');
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
 
-//TODO Move
+// TODO Move
 function editMode(active) {
   win.webContents.send('edit-mode', active);
 }
 
-function createWindow () {
+function createWindow() {
   // Create the browser window.
-  win = new BrowserWindow({width: 1200, height: 800});
+  win = new BrowserWindow({ width: 1200, height: 800 });
 
   const template = [
     {
       label: 'Edit',
-      submenu:[
+      submenu: [
         {
           label: 'Edition',
           click: () => editMode(true),
@@ -35,14 +35,14 @@ function createWindow () {
       ]
     },
     {
-      type:'separator'
+      type: 'separator'
     },
     {
-      role:'togglefullscreen',
+      role: 'togglefullscreen'
     },
     {
-      role:'reload',
-      accelerator:'F5'
+      role: 'reload',
+      accelerator: 'F5'
     }
 
   ];
@@ -57,13 +57,13 @@ function createWindow () {
     slashes: true
   }));
 
-  //See index.dev.js
+  // See index.dev.js
 
   // Open the DevTools.
-  //win.webContents.openDevTools();
+  // win.webContents.openDevTools();
 
-  //add the vuejs extension
-  //BrowserWindow.addDevToolsExtension('resources/vuejs-devtool');
+  // add the vuejs extension
+  // BrowserWindow.addDevToolsExtension('resources/vuejs-devtool');
 
   // Emitted when the window is closed.
   win.on('closed', () => {

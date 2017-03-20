@@ -1,8 +1,5 @@
 <template>
-<section id="column-container" class="column"  :class="[isInEditMode ? 'edit':'']" style="position:relative">
-
-
-
+ <section id="column-container" class="column"  :class="[isInEditMode ? 'edit':'']" style="position:relative">
   <button v-if="isInEditMode" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab delete" id="delete-column-btn"
   @click="deleteColumn">
     <i class="material-icons">delete</i>
@@ -10,8 +7,8 @@
   <div class="mdl-tooltip mdl-tooltip--large" data-mdl-for="delete-column-btn">Delete the column</div>
 
 <div>
-  <web-view
-          v-for="(row,index) in rows"
+<web-view
+        v-for="(row,index) in rows"
          v-bind:is-in-edit-mode="isInEditMode"
          v-on:delete="deleteRow"
          v-bind:key="index">
@@ -29,9 +26,9 @@
 export default {
   name: 'column-container',
   props: ['isInEditMode'],
-  data () {
+  data() {
     return {
-      rows:[{}],
+      rows: [{}]
     };
   },
   methods: {
@@ -39,14 +36,13 @@ export default {
       this.$emit('delete');
     },
     deleteRow: function (indexOfItem) {
-      if(this.rows.length > 1)
-      {
+      if (this.rows.length > 1) {
         this.rows.splice(indexOfItem, 1);
-      }else {
+      } else {
         this.showToastedMessage("You can't delete the last row");
       }
     },
-    addRow: function() {
+    addRow: function () {
       this.rows.push({});
     }
   }

@@ -1,17 +1,15 @@
 {
-    "extends": "eslint:recommended",
+    "extends": ["vue", "crockford"],
+    "plugins": [
+        "vue",
+        "html"
+    ],
     "parser": "babel-eslint",
     "rules": {
         "strict": 1,
-        "indent": [
-            2,
-            2
-        ],
-        "semi": [
-            2,
-            "always"
-        ],
-        "no-console": 0
+        "indent": ["warn", 2],
+        "semi": ["error", "always"],
+        "no-console": "off"
     },
     "env": {
         "es6": true,
@@ -19,7 +17,4 @@
         "browser": true
     },
     "validate": [ "javascript", "javascriptreact", { "language": "html", "autoFix": true } ],
-    "plugins": [
-        "html"
-    ]
 }

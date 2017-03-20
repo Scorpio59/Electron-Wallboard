@@ -3,20 +3,20 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 var WebpackNotifierPlugin = require('webpack-notifier');
 
-//const production = process.argv.indexOf('-p') !== -1;
+// const production = process.argv.indexOf('-p') !== -1;
 
 module.exports = {
   resolve: {
     modules: [
       './src',
-      './node_modules',
+      './node_modules'
     ],
     extensions: ['.js', '.vue', '.json'/*, '.css', '.node'*/],
-    alias: {vue: 'vue/dist/vue.js'}
+    alias: { vue: 'vue/dist/vue.js' }
   },
   entry: {
-    bundle: 'index.js',
-    //main: production ? 'main.js' : 'main.dev.js'
+    bundle: 'index.js'
+    // main: production ? 'main.js' : 'main.dev.js'
   },
   output: {
     filename: '[name].js',
@@ -27,12 +27,12 @@ module.exports = {
       dry: true
     }),
     new WebpackNotifierPlugin({
-      skipFirstNotification: true,
-      alwaysNotify: true
+      skipFirstNotification: true
+      // alwaysNotify: true
     }),
     new HtmlWebpackPlugin({
-      template: 'index.ejs',
-      //excludeChunks: ['main']
+      template: 'index.ejs'
+      // excludeChunks: ['main']
     })
   ],
   module: {
@@ -53,7 +53,7 @@ module.exports = {
       {
         test: /\.js$/,
         use: 'babel-loader',
-        include: [ path.resolve(__dirname, 'app/src/renderer') ],
+        include: [path.resolve(__dirname, 'app/src/renderer')],
         exclude: /node_modules/
       },
       {
@@ -107,9 +107,9 @@ module.exports = {
           }
         }
       }
-    ],
+    ]
   },
-  devtool: "cheap-eval-source-map",
+  devtool: 'cheap-eval-source-map',
   watchOptions: {
     ignored: /node_modules|resources|\.git|\.vscode/
   },
