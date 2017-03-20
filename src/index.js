@@ -9,7 +9,7 @@ Vue.component('column-container', require('./components/column-container.vue'));
 Vue.component('web-view', require('./components/web-view.vue'));
 Vue.component('edit-modal', require('./components/edit-modal.vue'));
 
-const mainView = new Vue({
+var mainView = new Vue({  // eslint-disable-line vars-on-top
   el: '#mainView',
   data: {
     isInEditMode: true,
@@ -42,7 +42,7 @@ const mainView = new Vue({
 });
 
 ipc.on('edit-mode', (evt, active) => {
-  mainView._data.isInEditMode = active;
+  mainView._data.isInEditMode = active; // eslint-disable-line no-underscore-dangle
   mainView.showToastedMessage(active ? 'Edition mode' : 'Display mode');
   console.log('Receive signal to editmode: ' + active);
 });

@@ -1,17 +1,48 @@
 const electron = require('electron');
-const { app, BrowserWindow, Menu } = electron;
+const { app, BrowserWindow, Menu, dialog } = electron;
 
 // import {app, BrowserWindow, Menu} from 'electron';
 const url = require('url');
 const path = require('path');
-
+const fs = require('fs');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
-
+var isInEditMode = true;
 // TODO Move
-function editMode(active) {
-  win.webContents.send('edit-mode', active);
+function toggleMode() {
+  isInEditMode = !isInEditMode;
+  win.webContents.send('edit-mode', isInEditMode);
+}
+
+function saveConfig() {
+  dialog.showSaveDialog({
+    title: 'Export configuration in file',
+    filters: [
+     { name: 'Config file', extensions: ['config'] }
+    ] }, function (fileName) {
+    if (fileName === undefined) return;
+    /* TODO  fs.writeFile(fileName, , function (err) {
+      if (err === undefined) {
+        dialog.showMessageBox({ message: 'The file has been saved! :-)',
+          buttons: ['OK'] });
+      } else {
+        dialog.showErrorBox('File Save Error', err.message);
+      }
+    });*/
+  });
+}
+function importConfig() {
+  dialog.showOpenDialog({
+    title: 'Import configuration in file',
+    filters: [
+     { name: 'Config file', extensions: ['config'] }
+    ] }, function (fileName) {
+    if (fileName === undefined) return;
+    /* TODO   fs.readFile(fileName, 'utf-8', function (err, data) {
+
+  });*/
+  });
 }
 
 function createWindow() {
@@ -20,29 +51,50 @@ function createWindow() {
 
   const template = [
     {
-      label: 'Edit',
+      label: 'File',
       submenu: [
         {
-          label: 'Edition',
-          click: () => editMode(true),
-          accelerator: 'F9'
-        },
-        {
-          label: 'Readonly',
-          click: () => editMode(false),
-          accelerator: 'F8'
+          role: 'quit'
         }
       ]
     },
     {
-      type: 'separator'
+      label: 'Edit',
+      submenu: [
+        {
+          label: 'Export config',
+          click: saveConfig
+        },
+        {
+          label: 'Import config',
+          click: importConfig
+        }
+      ]
     },
     {
-      role: 'togglefullscreen'
+      label: 'View',
+      submenu: [
+        {
+          label: 'Edition mode',
+          accelerator: 'F9',
+          click: toggleMode,
+          checked: isInEditMode,
+          type: 'checkbox'
+        },
+        {
+          role: 'toggledevtools'
+        },
+        {
+          role: 'togglefullscreen'
+        }
+      ]
     },
     {
       role: 'reload',
       accelerator: 'F5'
+    },
+    {
+      role: 'about'
     }
 
   ];
