@@ -2,9 +2,10 @@
   "name": "Electron-Wallboard",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/main.js",
+  "main": "main.js",
   "scripts": {
-    "build": "webpack --config webpack.config.js",
+    "build": "webpack -p",
+    "watch": "webpack -w",
     "start": "electron .",
     "dev": "electron main.dev.js"
   },
