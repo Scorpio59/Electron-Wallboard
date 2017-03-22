@@ -41,6 +41,19 @@ var mainView = new Vue({  // eslint-disable-line vars-on-top
   }
 });
 
+// Add v-mdl on div around material design lite component that need javascript update
+// https://posva.net/js/2015/08/26/using-material-design-lite-with-vuejs
+Vue.directive('mdl', {
+  bind: function (el) {
+    componentHandler.upgradeElement(el);
+  }
+});
+Vue.directive('mdl-progress', function (val) {
+  // The directive may be called before the element have been upgraded
+  if (!this.el.MaterialProgress) { componentHandler.upgradeElement(this.el); }
+  this.el.MaterialProgress.setProgress(val);
+});
+
 ipc.on('edit-mode', (evt, active) => {
   mainView._data.isInEditMode = active; // eslint-disable-line no-underscore-dangle
   mainView.showToastedMessage(active ? 'Edition mode' : 'Display mode');
