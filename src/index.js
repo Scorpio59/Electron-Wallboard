@@ -1,57 +1,49 @@
-// CSS
-require('material-design-lite');
-
-const electron = require('electron');
 const Vue = require('vue/dist/vue.js');
+import VueMaterial from 'vue-material';
+import 'vue-material/dist/vue-material.css';
+const electron = require('electron');
+
 const ipc = electron.ipcRenderer;
+
+Vue.use(VueMaterial);
 
 Vue.component('column-container', require('./components/column-container.vue'));
 Vue.component('web-view', require('./components/web-view.vue'));
+Vue.component('menu-toolbar', require('./components/menu-toolbar.vue'));
 Vue.component('edit-modal', require('./components/edit-modal.vue'));
-
+var blockIndex = 0;
 var mainView = new Vue({  // eslint-disable-line vars-on-top
   el: '#mainView',
+
   data: {
     isInEditMode: true,
-    columns: [{}],
+    blocks: [],
     showModal: false,
-    viewData: null
+    viewData: null,
+    toastedMessage: null
   },
   methods: {
-    addColumn: function () {
-      this.columns.push({});
+    addBlock: function () {
+      blockIndex += 1;
+      const newBlock = { 'x': 0, 'y': 0, 'w': 4, 'h': 4, 'i': blockIndex };
+      this.blocks.push(newBlock);
     },
     deleteColumn: function (indexOfItem) {
-      if (this.columns.length > 1) {
-        this.columns.splice(indexOfItem, 1);
+      if (this.blocks.length > 1) {
+        this.blocks.splice(indexOfItem, 1);
       } else {
         this.showToastedMessage("You can't delete the last column");
       }
     },
     showToastedMessage: function (message) {
-      var data = {
-        message: message,
-        timeout: 800 };
-      document.querySelector('#message-toast').MaterialSnackbar.showSnackbar(data);
+      this.toastedMessage = message;
+      this.$refs.snackbar.open();
     },
     openModal: function (data) {
       this.showModal = true;
       this.viewData = data;
     }
   }
-});
-
-// Add v-mdl on div around material design lite component that need javascript update
-// https://posva.net/js/2015/08/26/using-material-design-lite-with-vuejs
-Vue.directive('mdl', {
-  bind: function (el) {
-    componentHandler.upgradeElement(el);
-  }
-});
-Vue.directive('mdl-progress', function (val) {
-  // The directive may be called before the element have been upgraded
-  if (!this.el.MaterialProgress) { componentHandler.upgradeElement(this.el); }
-  this.el.MaterialProgress.setProgress(val);
 });
 
 ipc.on('edit-mode', (evt, active) => {

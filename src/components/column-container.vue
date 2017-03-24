@@ -1,81 +1,71 @@
 <template>
- <section id="column-container" class="column"  :class="[isInEditMode ? 'edit':'']" style="position:relative">
-  <button v-if="isInEditMode" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab delete" id="delete-column-btn"
-  @click="deleteColumn">
-    <i class="material-icons">delete</i>
-  </button>
-  <div class="mdl-tooltip mdl-tooltip--large" data-mdl-for="delete-column-btn">Delete the column</div>
+<section id="column-container">
 
-<div>
-<web-view
-        v-for="(row,index) in rows"
-         v-bind:is-in-edit-mode="isInEditMode"
-         v-on:delete="deleteRow"
-         v-bind:key="index">
-  </web-view>
-</div>
-  <button v-if="isInEditMode" v-on:click="addRow" id="add-row-btn" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab button-add-row">
-    <i class="material-icons">add</i>
-  </button>
-  <div class="mdl-tooltip mdl-tooltip--top mdl-tooltip--large" data-mdl-for="add-row-btn">Add a row</div>
+
+    <grid-layout :layout="blocks" :col-num="12" :row-height="30" :is-draggable="isInEditMode" :is-resizable="isInEditMode" :vertical-compact="true" :margin="isInEditMode? [10, 10]: [0,0]" :use-css-transforms="true">
+
+        <grid-item v-for="item in blocks" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i">
+
+            <web-view v-bind:is-in-edit-mode="isInEditMode" v-bind:key="item.i">
+            </web-view>
+        </grid-item>
+    </grid-layout>
+
+    </div>
 
 </section>
 </template>
 
 <script>
+import VueGridLayout from 'vue-grid-layout';
+const GridLayout = VueGridLayout.GridLayout;
+const GridItem = VueGridLayout.GridItem;
 export default {
-  name: 'column-container',
-  props: ['isInEditMode'],
-  data() {
-    return {
-      rows: [{}]
-    };
-  },
-  methods: {
-    deleteColumn: function () {
-      this.$emit('delete');
+    name: 'column-container',
+    components: {
+        GridLayout,
+        GridItem
     },
-    deleteRow: function (indexOfItem) {
-      if (this.rows.length > 1) {
-        this.rows.splice(indexOfItem, 1);
-      } else {
-        this.showToastedMessage("You can't delete the last row");
-      }
+    props: ['isInEditMode', 'blocks'],
+    data() {
+        return {};
     },
-    addRow: function () {
-      this.rows.push({});
+    methods: {
+        deleteBlock: function() {
+            this.$emit('delete');
+        },
+        addRow: function() {
+            this.rows.push({});
+        }
     }
-  }
 };
 </script>
 
 
 <style scoped>
 .column {
-   float: left;
-   flex: 1;
-
+    float: left;
+    flex: 1;
     overflow: hidden;
     min-height: 100vh;
 }
 
-.edit{
-     border: 1px solid;
-     overflow: auto;
+.edit {
+    border: 1px solid;
+    overflow: auto;
     resize: horizontal;
 }
 
 button.delete {
-  top: 10px;
-  position: absolute;
-  right: 10px;
+    top: 10px;
+    position: absolute;
+    right: 10px;
 }
 
-.button-add-row{
-  bottom: 0;
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.button-add-row {
+    bottom: 0;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
-
 </style>

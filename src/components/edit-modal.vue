@@ -65,7 +65,6 @@
 </template>
 
 <script>
-require('material-design-lite');
 export default {
     name: 'edit-modal',
     props: ['isInEditMode', 'viewData'],
@@ -79,7 +78,7 @@ export default {
             this.tabs.splice(this.tabs.indexOf(tab), 1);
         },
         addTab: function() {
-            this.tabs.push({})
+            this.tabs.push({});
         }
     }
 };
