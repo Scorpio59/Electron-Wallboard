@@ -1,12 +1,12 @@
 <template>
-<section id="web-view" style="height:100%">
-    <webview :src="src" style="height:100%"></webview>
-
-    <div class="md-fab  md-mini md-fab-top-left">
-        <md-button v-if="isInEditMode" class="md-fab md-mini " @click="editBlock">
+<section id="web-view" style="height:100%" :class="{edit : isInEditMode}" class="block md-accent">
+    <webview :src="src" style="height:100%" :class="{edit : isInEditMode }"></webview>
+    <edit-modal v-bind:view-data="src" ref="editmodal"> </edit-modal>
+    <div class="md-fab  md-dense md-fab-top-left edition">
+        <md-button v-if="isInEditMode" class="md-icon-button md-mini md-fab " @click.native="editBlock">
             <md-icon>edit</md-icon>
         </md-button>
-        <md-button v-if="isInEditMode" class="md-fab md-warn md-mini " @click="deleteBlock">
+        <md-button v-if="isInEditMode" class="md-icon-button md-mini md-raised  md-warn" @click.native="deleteBlock">
             <md-icon>delete</md-icon>
         </md-button>
     </div>
@@ -16,7 +16,7 @@
 <script>
 export default {
     name: 'web-view',
-    props: ['isInEditMode'],
+    props: ['isInEditMode', 'blockContext'],
     data() {
         return {
             src: "http://google.fr"
@@ -24,10 +24,12 @@ export default {
     },
     methods: {
         deleteBlock: function() {
-            this.$emit('delete');
+            this.$emit('delete', this.blockContext.i);
         },
         editBlock: function() {
-            this.$parent.$emit('show-modal', this._data);
+
+            this.$refs.editmodal.$children[0].open();
+
         }
     }
 };
@@ -35,15 +37,19 @@ export default {
 
 
 <style scoped>
-button.delete {
-    top: 10px;
-    position: absolute;
-    right: 10px;
+webview.edit {
+    opacity: 0.4;
 }
 
-button.edit {
-    top: 10px;
-    position: absolute;
-    left: 10px;
+section.edit {
+    background-color: #EEEEEE;
+}
+
+.edition {
+    display: none;
+}
+
+.block:hover .edition {
+    display: block;
 }
 </style>

@@ -22,19 +22,14 @@ var mainView = new Vue({  // eslint-disable-line vars-on-top
     viewData: null,
     toastedMessage: null
   },
+
   methods: {
     addBlock: function () {
-      blockIndex += 1;
       const newBlock = { 'x': 0, 'y': 0, 'w': 4, 'h': 4, 'i': blockIndex };
       this.blocks.push(newBlock);
+      blockIndex += 1;
     },
-    deleteColumn: function (indexOfItem) {
-      if (this.blocks.length > 1) {
-        this.blocks.splice(indexOfItem, 1);
-      } else {
-        this.showToastedMessage("You can't delete the last column");
-      }
-    },
+
     showToastedMessage: function (message) {
       this.toastedMessage = message;
       this.$refs.snackbar.open();
