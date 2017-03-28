@@ -20,7 +20,7 @@ module.exports = {
   },
   output: {
     filename: '[name].js',
-    path: 'dist'
+    path: path.join(__dirname, 'dist')
   },
   plugins: [
     new CleanWebpackPlugin(['dist'], {
@@ -37,7 +37,6 @@ module.exports = {
   ],
   module: {
     rules: [
-
       {
         test: /\.css$/,
         use: ['vue-style-loader', 'css-loader']
