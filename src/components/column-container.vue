@@ -1,10 +1,7 @@
 <template>
-<grid-layout :layout="blocks" :col-num="12" :row-height="30" :is-draggable="isInEditMode" :is-resizable="isInEditMode" :vertical-compact="false" :margin="[0,0]" :use-css-transforms="true">
-
-    <grid-item v-for="item in blocks" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i">
-
-        <web-view v-bind:is-in-edit-mode="isInEditMode" v-bind:key="item.i" v-bind:block-context="item" @delete="deleteBlock">
-        </web-view>
+<grid-layout :layout="blocks" :col-num="24" :row-height="20" :is-draggable="isInEditMode" :is-resizable="isInEditMode" :vertical-compact="false" :margin="[0,0]" :use-css-transforms="true">
+    <grid-item v-for="item in blocks" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i" >
+        <web-view v-bind:is-in-edit-mode="isInEditMode" v-bind:key="item.i" v-bind:block-context="item" @delete="deleteBlock"></web-view>
     </grid-item>
 </grid-layout>
 </template>
@@ -24,9 +21,10 @@ export default {
         return {};
     },
     methods: {
-        deleteBlock: function(indexOfItem) {
+        deleteBlock: function(item) {
             if (this.blocks.length > 1) {
-                this.blocks.splice(indexOfItem, 1);
+                var index = this.blocks.indexOf(item)
+                this.blocks.splice(index, 1)
             } else {
                 /*TODO   this.showToastedMessage("You can't delete the last column");*/
             }
@@ -40,6 +38,10 @@ export default {
 
 
 <style scoped>
+.vue-grid-item:hover{
+    cursor: move;
+}
+
 .vue-grid-layout {
     background-color: #FBFBFB;
     min-height: 100%;

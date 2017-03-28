@@ -1,9 +1,9 @@
 <template>
 <section id="web-view" style="height:100%" :class="{edit : isInEditMode}" class="block md-accent">
-    <webview :src="src" style="height:100%" :class="{edit : isInEditMode }"></webview>
-    <edit-modal v-bind:view-data="src" ref="editmodal"> </edit-modal>
+    <webview :src="currentTab.url" style="height:100%" :class="{edit : isInEditMode }" class="hideOnHover"></webview>
+    <div  class="help displayOnHover">Move and resize me</div>
     <div class="md-fab  md-dense md-fab-top-left edition">
-        <md-button v-if="isInEditMode" class="md-icon-button md-mini md-fab " @click.native="editBlock">
+        <md-button v-if="isInEditMode" class="md-icon-button md-mini md-raised md-primary" @click.native="editBlock">
             <md-icon>edit</md-icon>
         </md-button>
         <md-button v-if="isInEditMode" class="md-icon-button md-mini md-raised  md-warn" @click.native="deleteBlock">
@@ -14,35 +14,69 @@
 </template>
 
 <script>
+import { bus } from '../index.js';
+
 export default {
     name: 'web-view',
     props: ['isInEditMode', 'blockContext'],
     data() {
         return {
-            src: "http://google.fr"
+            currentTab : this.blockContext.tabs[0]
         };
     },
     methods: {
         deleteBlock: function() {
-            this.$emit('delete', this.blockContext.i);
+            this.$emit('delete', this.blockContext);
         },
         editBlock: function() {
-
-            this.$refs.editmodal.$children[0].open();
-
+            bus.$emit('open-webview-settings', this.blockContext)
+        },
+        reloadPage:function(){
+          var wv =this.$el.querySelector('webview');
+          wv.reload();
         }
-    }
+
+    },
+    watch: {
+       // whenever tab changes, this function will run
+       currentTab: function (newTab) {
+         this.reloadPage();
+       }
+     }
 };
+
+
 </script>
 
 
 <style scoped>
+
+
+.help{
+    position: absolute;
+    top: 50%;
+    margin: 0 auto;
+    overflow: hidden;
+    left:0;
+    right:0;
+    width: 50%;
+    min-width:150px;
+    opacity: 0;
+}
+
 webview.edit {
-    opacity: 0.4;
+    opacity: .4;
+}
+
+.block:hover .displayOnHover {
+    opacity: 1;
+}
+.block:hover .hideOnHover {
+    opacity: 0;
 }
 
 section.edit {
-    background-color: #EEEEEE;
+    background-color: #EFEFEF;
 }
 
 .edition {

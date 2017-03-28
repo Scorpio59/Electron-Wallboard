@@ -1,7 +1,7 @@
 <template>
 <sweet-modal title="Block settings" overlay-theme="dark" >
     <template slot="button">
-      <md-button class="md-raised md-primary" @click.native="save">Save</md-button>
+      <md-button class="md-raised md-primary">Save</md-button>
     </template>
     <form @submit.stop.prevent="submit" v-if="blockContext">
       <md-input-container>
@@ -36,9 +36,7 @@ import {
     SweetModal,
     SweetModalTab
 } from 'sweet-modal-vue';
-import { bus } from '../index.js';
-import {createTabBlockSettings} from '../config'
-
+import defaultTabBlockSettings from '../config'
 export default {
     name: 'edit-modal',
     components: {
@@ -53,13 +51,10 @@ export default {
     },
     methods: {
         removeTab: function(tab) {
-            this.blockContext.tabs.splice(this.blockContext.tabs.indexOf(tab), 1);
+            this.blockContext.tabs.splice(this.tabs.indexOf(tab), 1);
         },
         addTab: function() {
-            this.blockContext.tabs.push(createTabBlockSettings());
-        },
-        save: function(){
-            this.$parent.$refs.editmodal.$children[0].close();
+            this.blockContext.tabs.push(defaultTabBlockSettings);
         }
     }
 };
@@ -72,6 +67,4 @@ button.delete {
     position: absolute;
     right: 10px;
 }
-
-
 </style>
