@@ -9,102 +9,39 @@
         require('module').globalPaths.push('<%= htmlWebpackPlugin.options.appModules.replace(/\\/g, '\\\\') %>')
       </script>
     <% } %>
-    <link rel="stylesheet" href="../node_modules/material-design-lite/material.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <!-- TODO move in less file -->
 <style>
-.button-add-column{
-  top: 50%;
-  position: fixed;
-  right: 0;
-  transform: translate(-50%, -50%);
-}
-.modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, .5);
-  display: table;
-  transition: opacity .3s ease;
+
+/*Override style from grid layout */
+.vue-grid-item.vue-grid-placeholder {
+    background-color: indigo !important;
 }
 
-.modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
-}
-
-.modal-container {
-  width: 500px;
-  margin: 0px auto;
-  padding: 20px 30px;
-  background-color: #fff;
-  border-radius: 2px;
-  transition: all .3s ease;
-}
-
-.modal-header h3 {
-  margin-top: 0;
-  color: #42b983;
-}
-
-.modal-body {
-  margin: 20px 0;
-}
-
-.modal-default-button {
-  float: right;
-}
-
-/*
- * The following styles are auto-applied to elements with
- * transition="modal" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the modal transition by editing
- * these styles.
- */
-
-.modal-enter {
-  opacity: 0;
-}
-
-.modal-leave-active {
-  opacity: 0;
-}
-
-.modal-enter .modal-container,
-.modal-leave-active .modal-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
-}
 </style>
   </head>
   <body>
-    <div id="mainView">
-      <div style="with:100%;height:100%;display:flex;">
-         <column-container
-                 v-for="column in columns"
-                v-bind:is-in-edit-mode="isInEditMode"
-                v-on:delete="deleteColumn"
-                v-on:show-modal="openModal"
-                    v-bind:key="column.id">
-         </column-container>
-      </div>
 
-        <button v-if="isInEditMode" v-on:click="addColumn" id="add-col-btn" class="mdl-snackbar__action mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect button-add-column">
-          <i class="material-icons">add row</i>
-        </button>
-        <div class="mdl-tooltip mdl-tooltip--top mdl-tooltip--large" data-mdl-for="add-col-btn">
-      Add a column
-      </div>
-        <div id="message-toast" class="mdl-js-snackbar mdl-snackbar">
-            <div class="mdl-snackbar__text"></div>
-            <button class="mdl-snackbar__action" type="button"></button>
-      </div>
-       <edit-modal v-if="showModal" @close="showModal = false" v-bind:view-data="viewData"> </edit-modal>
+    <div id="mainView"  role="main" style="height:100%;">
+
+
+      <menu-toolbar v-if="isInEditMode"></menu-toolbar>
+      <md-button class="md-fab md-fab-bottom-right md-primary" v-if="isInEditMode" @click.native="addBlock">
+        <md-icon>add</md-icon>
+      </md-button>
+        <column-container v-bind:blocks="blocks" v-bind:is-in-edit-mode="isInEditMode">
+          </column-container>
+
+
+
+      <md-snackbar md-position='bottom' ref="snackbar" md-duration="50000">
+         <span >{{toastedMessage}}</span>
+         <md-button class="md-accent" md-theme="light-blue" @click.native="$refs.snackbar.close()">Retry</md-button>
+       </md-snackbar>
+
+
+
     </div>
 
   </body>
