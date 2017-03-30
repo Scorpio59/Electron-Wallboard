@@ -1,11 +1,12 @@
 var tabIndex = -1;
 var blockIndex = -1;
+var presetIndex = -1;
 export function createTabBlockSettings() {
   tabIndex = tabIndex + 1;
   return {
     id: tabIndex,
     needRefresh: false,
-    url: 'help-block.html',
+    url: 'http://www.google.fr',
     autoZoom: false,
     zoomFactor: 1,
     selector: undefined
@@ -22,5 +23,13 @@ export function createBlockSettings() {
     'w': 24,
     'h': 20,
     'i': blockIndex
+  };
+};
+
+export function createPreset() {
+  presetIndex = presetIndex + 1;
+  return {
+    name: '',
+    blocks: [createBlockSettings()]
   };
 };

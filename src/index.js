@@ -1,7 +1,7 @@
 const Vue = require('vue/dist/vue.js');
 import VueMaterial from 'vue-material';
 import 'vue-material/dist/vue-material.css';
-import { createBlockSettings } from 'config';
+import { createBlockSettings, createPreset } from 'config';
 const electron = require('electron');
 
 const ipc = electron.ipcRenderer;
@@ -18,15 +18,18 @@ var mainView = new Vue({  // eslint-disable-line vars-on-top
 
   data: {
     isInEditMode: true,
-    blocks: [],
     showModal: false,
     blockContext: null,
-    toastedMessage: null
+    toastedMessage: null,
+    presets: [createPreset()],
+    currentPreset: null
   },
-
+  created() {
+    this.currentPreset = this.presets[0];
+  },
   methods: {
     addBlock: function () {
-      this.blocks.push(createBlockSettings());
+      this.currentPreset.blocks.push(createBlockSettings());
     },
 
     showToastedMessage: function (message) {

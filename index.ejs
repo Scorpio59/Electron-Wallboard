@@ -19,14 +19,14 @@
                 .vue-grid-item.vue-grid-placeholder {
                     background-color: indigo !important;
                 }
-                .sweet-modal{
-                  max-width: 800px !important;
+
+                .sweet-modal {
+                    max-width: 800px !important;
                 }
             </style>
 </head>
 
 <body>
-
     <div id="mainView" role="main" style="height:100%;">
         <edit-modal v-bind:block-context="blockContext" ref="editmodal"> </edit-modal>
 
@@ -34,7 +34,7 @@
         <md-button class="md-fab md-fab-bottom-right md-primary" v-if="isInEditMode" @click.native="addBlock">
             <md-icon>add</md-icon>
         </md-button>
-        <column-container v-bind:blocks="blocks" v-bind:is-in-edit-mode="isInEditMode">
+        <column-container v-bind:blocks="currentPreset.blocks" v-bind:is-in-edit-mode="isInEditMode">
         </column-container>
 
 
@@ -47,6 +47,11 @@
 
 
     </div>
+
+</body>
+
+</html>
+
 
 </body>
 
