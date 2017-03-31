@@ -5,7 +5,7 @@
         <md-menu md-align-trigger>
             <md-button md-menu-trigger>Presets</md-button>
             <md-menu-content>
-                <md-menu-item v-for="(preset, index) in presets">
+                <md-menu-item v-for="(preset, index) in presets" @click.native="selectPreset(preset)">
                     <md-icon v-show="preset === currentPreset">check_box</md-icon>
                     <span>{{index +"# :"+ preset.name}} <md-icon>rate_review</md-icon></span>
                 </md-menu-item>
@@ -75,6 +75,9 @@ export default {
       addPreset: function(){
         this.newPreset = createPreset();
         this.$refs["newPresetDialog"].open();
+      },
+      selectPreset: function(preset){
+        bus.$emit('select-preset', preset)
       },
       onClose(type) {
         if(type === 'ok')

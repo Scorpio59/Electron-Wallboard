@@ -1,5 +1,5 @@
 const electron = require('electron');
-const { app, BrowserWindow, Menu, dialog } = electron;
+const { app, BrowserWindow, Menu, dialog, globalShortcut } = electron;
 
 // import {app, BrowserWindow, Menu} from 'electron';
 const url = require('url');
@@ -45,7 +45,19 @@ function importConfig() {
   });
 }
 
+function SetGlobalShortcut() {
+  var array = [...Array(12).keys()];
+  for (let i in array) { // eslint-disable-line prefer-const
+    const u = parseInt(i) + 1;
+    console.log('F' + u);
+    globalShortcut.register('F' + u, () => {
+      win.webContents.send('select-preset-index', i);
+    });
+  }
+}
+
 function createWindow() {
+  SetGlobalShortcut();
   // Create the browser window.
   win = new BrowserWindow({ width: 1200, height: 800 });
 
