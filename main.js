@@ -10,21 +10,15 @@ const {
 const url = require('url');
 const path = require('path');
 const fs = require('fs');
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
 var isInEditMode = true;
-// TODO Move
+
 function toggleMode() {
     isInEditMode = !isInEditMode;
     win.webContents.send('edit-mode', isInEditMode);
-}
-
-function retrieveCurrentConfig() {
-    var confObject = {
-        'config': 'Hello World !'
-    };
-    return JSON.stringify(confObject);
 }
 
 function onConfigFileRead(err, data) {
@@ -32,6 +26,31 @@ function onConfigFileRead(err, data) {
     if (err) throw err;
     configuration = JSON.parse(data);
     console.log(configuration);
+}
+
+app.on('requested-config', (evt, confPresets) => {
+    if (confPresets) {
+        var fileName = confPresets[0];
+        var presets = confPresets[1];
+        if (fileName === undefined) return;
+
+        fs.writeFile(fileName, presets, function(err) {
+            if (!err) {
+                dialog.showMessageBox({
+                    message: 'The file has been saved! :-)',
+                    buttons: ['OK']
+                });
+            } else {
+                dialog.showErrorBox('File Save Error', err);
+            }
+        });
+    }
+});
+
+function onImportConfig(fileName) {
+    //TODO update the current coniguration
+    if (!fileName) return;
+    fs.readFile(fileName[0], 'utf-8', onConfigFileRead);
 }
 
 function saveConfig() {
@@ -42,18 +61,7 @@ function saveConfig() {
             extensions: ['json']
         }]
     }, function(fileName) {
-        if (fileName === undefined) return;
-        var confObject = retrieveCurrentConfig();
-        fs.writeFile(fileName, confObject, function(err) {
-            if (!err) {
-                dialog.showMessageBox({
-                    message: 'The file has been saved! :-)',
-                    buttons: ['OK']
-                });
-            } else {
-                dialog.showErrorBox('File Save Error', err);
-            }
-        });
+        win.webContents.send('request-config', fileName);
     });
 }
 
@@ -64,10 +72,7 @@ function importConfig() {
             name: 'Config file',
             extensions: ['json']
         }]
-    }, function(fileName) {
-        if (!fileName) return;
-        fs.readFile(fileName[0], 'utf-8', onConfigFileRead);
-    });
+    }, onImportConfig);
 }
 
 function createWindow() {
