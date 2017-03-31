@@ -68,7 +68,14 @@ ipc.on('import-config', (evt, config) => {
 ipc.on('select-preset-index', (evt, index) => {
   if (mainView.$data.presets.length > index) {
     mainView.$data.currentPreset = mainView.$data.presets[index];
-    mainView.showToastedMessage('Preset ' + mainView.$data.currentPreset.name + ' selected');
+    mainView.showToastedMessage('Preset #' + index + ' : ' + mainView.$data.currentPreset.name + ' selected');
+  }
+});
+
+ipc.on('save-currentpreset-in-index', (evt, index) => {
+  if (mainView.$data.presets.length > index) {
+    mainView.$data.presets[index] = JSON.parse(JSON.stringify(mainView.$data.currentPreset));
+    mainView.showToastedMessage('Preset  #' + index + ' : ' + mainView.$data.currentPreset.name + ' saved');
   }
 });
 

@@ -26,8 +26,9 @@
             </style>
 </head>
 
-<body style="height:100%;">
-    <div id="mainView" role="main" style="height:100%;">
+<body style="height:100%;" >
+    <div id="mainView" role="main" >
+
         <edit-modal v-bind:block-context="blockContext" ref="editmodal"> </edit-modal>
 
         <menu-toolbar v-if="isInEditMode" v-bind:presets="presets" v-bind:current-preset="currentPreset"></menu-toolbar>
@@ -37,14 +38,10 @@
         <column-container v-bind:blocks="currentPreset.blocks" v-bind:is-in-edit-mode="isInEditMode">
         </column-container>
 
-
-
-        <md-snackbar md-position='bottom' ref="snackbar" md-duration="50000">
+        <md-snackbar md-position='bottom center' ref="snackbar" md-duration="3000">
             <span>{{toastedMessage}}</span>
-            <md-button class="md-accent" md-theme="light-blue" @click.native="$refs.snackbar.close()">Retry</md-button>
+            <md-button class="md-accent" md-theme="light-blue" @click.native="$refs.snackbar.close()"><md-icon>close</md-icon></md-button>
         </md-snackbar>
-
-
 
     </div>
 

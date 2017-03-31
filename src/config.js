@@ -1,6 +1,5 @@
 var tabIndex = -1;
 var blockIndex = -1;
-var presetIndex = -1;
 export function createTabBlockSettings() {
   tabIndex = tabIndex + 1;
   return {
@@ -26,10 +25,10 @@ export function createBlockSettings() {
   };
 };
 
-export function createPreset() {
-  presetIndex = presetIndex + 1;
+export function createPreset(index) {
   return {
-    name: 'Preset' + presetIndex,
+    name: 'Preset',
+    index: index,
     blocks: [createBlockSettings()]
   };
 };

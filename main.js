@@ -91,6 +91,9 @@ function SetGlobalShortcut() {
     globalShortcut.register('F' + u, () => {
       win.webContents.send('select-preset-index', i);
     });
+    globalShortcut.register('Ctrl +F' + u, () => {
+      win.webContents.send('save-currentpreset-in-index', i);
+    });
   }
 }
 
@@ -139,10 +142,6 @@ function createWindow() {
     ]
   },
   {
-    role: 'reload',
-    accelerator: 'F5'
-  },
-  {
     role: 'about'
   }
   ];
@@ -160,14 +159,6 @@ function createWindow() {
     onImportConfig(defaultConfigFile);
     win.show();
   });
-
-	// See index.dev.js
-
-	// Open the DevTools.
-	// win.webContents.openDevTools();
-
-	// add the vuejs extension
-	// BrowserWindow.addDevToolsExtension('resources/vuejs-devtool');
 
 	// Emitted when the window is closed.
   win.on('closed', () => {
