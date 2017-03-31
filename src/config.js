@@ -29,7 +29,7 @@ export function createBlockSettings() {
 export function createPreset() {
   presetIndex = presetIndex + 1;
   return {
-    name: '',
+    name: 'Preset' + presetIndex,
     blocks: [createBlockSettings()]
   };
 };

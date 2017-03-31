@@ -26,11 +26,11 @@
             </style>
 </head>
 
-<body>
+<body style="height:100%;">
     <div id="mainView" role="main" style="height:100%;">
         <edit-modal v-bind:block-context="blockContext" ref="editmodal"> </edit-modal>
 
-        <menu-toolbar v-if="isInEditMode"></menu-toolbar>
+        <menu-toolbar v-if="isInEditMode" v-bind:presets="presets" v-bind:current-preset="currentPreset"></menu-toolbar>
         <md-button class="md-fab md-fab-bottom-right md-primary" v-if="isInEditMode" @click.native="addBlock">
             <md-icon>add</md-icon>
         </md-button>

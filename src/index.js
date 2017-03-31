@@ -52,3 +52,6 @@ bus.$on('open-webview-settings', function (blockContext) {
   mainView.$data.blockContext = blockContext;
   mainView.$refs.editmodal.$children[0].open();
 });
+bus.$on('select-preset', function (preset) {
+  mainView.$data.currentPreset = preset;
+});
