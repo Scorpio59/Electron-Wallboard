@@ -51,12 +51,26 @@ ipc.on('edit-mode', (evt, active) => {
     mainView.showToastedMessage(active ? 'Edition mode' : 'Display mode');
     console.log('Receive signal to editmode: ' + active);
 });
+<<<<<<< HEAD
 ipc.on('request-config', (evt, fileName) => {
     var confPresets = JSON.stringify({
         'fileName': fileName,
         'presets': mainView.data.presets
     });
     event.sender.send('requested-config', confPresets);
+=======
+
+ipc.on('select-preset-index', (evt, index) => {
+  if (mainView.$data.presets.length > index) {
+    mainView.$data.currentPreset = mainView.$data.presets[index];
+    mainView.showToastedMessage('Preset ' + mainView.$data.currentPreset.name + ' selected');
+  }
+});
+
+bus.$on('open-webview-settings', function (blockContext) {
+  mainView.$data.blockContext = blockContext;
+  mainView.$refs.editmodal.$children[0].open();
+>>>>>>> 14165ae9eb593c373a72538d4b29dd9f36dc62e4
 });
 
 bus.$on('open-webview-settings', function(blockContext) {

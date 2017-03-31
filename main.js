@@ -3,7 +3,8 @@ const {
     app,
     BrowserWindow,
     Menu,
-    dialog
+    dialogt,
+    globalShortcut
 } = electron;
 
 // import {app, BrowserWindow, Menu} from 'electron';
@@ -17,17 +18,28 @@ let win;
 var isInEditMode = true;
 
 function toggleMode() {
-    isInEditMode = !isInEditMode;
-    win.webContents.send('edit-mode', isInEditMode);
+  isInEditMode = !isInEditMode;
+  win.webContents.send('edit-mode', isInEditMode);
 }
 
+<<<<<<< HEAD
+=======
+function retrieveCurrentConfig() {
+  var confObject = {
+    'config': 'Hello World !'
+  };
+  return JSON.stringify(confObject);
+}
+
+>>>>>>> 14165ae9eb593c373a72538d4b29dd9f36dc62e4
 function onConfigFileRead(err, data) {
-    var configuration;
-    if (err) throw err;
-    configuration = JSON.parse(data);
-    console.log(configuration);
+  var configuration;
+  if (err) throw err;
+  configuration = JSON.parse(data);
+  console.log(configuration);
 }
 
+<<<<<<< HEAD
 app.on('requested-config', (evt, confPresets) => {
     if (confPresets) {
         var fileName = confPresets[0];
@@ -62,10 +74,33 @@ function saveConfig() {
         }]
     }, function(fileName) {
         win.webContents.send('request-config', fileName);
+=======
+function saveConfig() {
+  dialog.showSaveDialog({
+    title: 'Export configuration in file',
+    filters: [{
+      name: 'Config file',
+      extensions: ['json']
+    }]
+  }, function (fileName) {
+    if (fileName === undefined) return;
+    var confObject = retrieveCurrentConfig();
+    fs.writeFile(fileName, confObject, function (err) {
+      if (!err) {
+        dialog.showMessageBox({
+          message: 'The file has been saved! :-)',
+          buttons: ['OK']
+        });
+      } else {
+        dialog.showErrorBox('File Save Error', err);
+      }
+>>>>>>> 14165ae9eb593c373a72538d4b29dd9f36dc62e4
     });
+  });
 }
 
 function importConfig() {
+<<<<<<< HEAD
     dialog.showOpenDialog({
         title: 'Import configuration in file',
         filters: [{
@@ -73,69 +108,92 @@ function importConfig() {
             extensions: ['json']
         }]
     }, onImportConfig);
+=======
+  dialog.showOpenDialog({
+    title: 'Import configuration in file',
+    filters: [{
+      name: 'Config file',
+      extensions: ['json']
+    }]
+  }, function (fileName) {
+    if (!fileName) return;
+    fs.readFile(fileName[0], 'utf-8', onConfigFileRead);
+  });
+}
+
+function SetGlobalShortcut() {
+  var array = [...Array(12).keys()];
+  for (let i in array) { // eslint-disable-line prefer-const
+    const u = parseInt(i) + 1;
+    console.log('F' + u);
+    globalShortcut.register('F' + u, () => {
+      win.webContents.send('select-preset-index', i);
+    });
+  }
+>>>>>>> 14165ae9eb593c373a72538d4b29dd9f36dc62e4
 }
 
 function createWindow() {
+  SetGlobalShortcut();
     // Create the browser window.
-    win = new BrowserWindow({
-        width: 1200,
-        height: 800
-    });
+  win = new BrowserWindow({
+    width: 1200,
+    height: 800
+  });
 
-    const template = [{
-            label: 'File',
-            submenu: [{
-                role: 'quit'
-            }]
-        },
-        {
-            label: 'Edit',
-            submenu: [{
-                    label: 'Export config',
-                    click: saveConfig
-                },
-                {
-                    label: 'Import config',
-                    click: importConfig
-                }
-            ]
-        },
-        {
-            label: 'View',
-            submenu: [{
-                    label: 'Edition mode',
-                    accelerator: 'F9',
-                    click: toggleMode,
-                    checked: isInEditMode,
-                    type: 'checkbox'
-                },
-                {
-                    role: 'toggledevtools'
-                },
-                {
-                    role: 'togglefullscreen'
-                }
-            ]
-        },
-        {
-            role: 'reload',
-            accelerator: 'F5'
-        },
-        {
-            role: 'about'
-        }
+  const template = [{
+    label: 'File',
+    submenu: [{
+      role: 'quit'
+    }]
+  },
+  {
+    label: 'Edit',
+    submenu: [{
+      label: 'Export config',
+      click: saveConfig
+    },
+    {
+      label: 'Import config',
+      click: importConfig
+    }
+    ]
+  },
+  {
+    label: 'View',
+    submenu: [{
+      label: 'Edition mode',
+      accelerator: 'F9',
+      click: toggleMode,
+      checked: isInEditMode,
+      type: 'checkbox'
+    },
+    {
+      role: 'toggledevtools'
+    },
+    {
+      role: 'togglefullscreen'
+    }
+    ]
+  },
+  {
+    role: 'reload',
+    accelerator: 'F5'
+  },
+  {
+    role: 'about'
+  }
+  ];
 
-    ];
-
-    const menu = Menu.buildFromTemplate(template);
-    Menu.setApplicationMenu(menu);
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
 
     // and load the index.html of the app.
-    win.loadURL(url.format({
-        pathname: path.join(__dirname, 'dist/index.html'),
-        protocol: 'file:',
-        slashes: true
-    }));
+  win.loadURL(url.format({
+    pathname: path.join(__dirname, 'dist/index.html'),
+    protocol: 'file:',
+    slashes: true
+  }));
 
     // See index.dev.js
 
@@ -146,12 +204,12 @@ function createWindow() {
     // BrowserWindow.addDevToolsExtension('resources/vuejs-devtool');
 
     // Emitted when the window is closed.
-    win.on('closed', () => {
+  win.on('closed', () => {
         // Dereference the window object, usually you would store windows
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
-        win = null;
-    });
+    win = null;
+  });
 }
 
 // This method will be called when Electron has finished
@@ -163,17 +221,17 @@ app.on('ready', createWindow);
 app.on('window-all-closed', () => {
     // On macOS it is common for applications and their menu bar
     // to stay active until the user quits explicitly with Cmd + Q
-    if (process.platform !== 'darwin') {
-        app.quit();
-    }
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
 });
 
 app.on('activate', () => {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    if (win === null) {
-        createWindow();
-    }
+  if (win === null) {
+    createWindow();
+  }
 });
 
 // In this file you can include the rest of your app's specific main process
