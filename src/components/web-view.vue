@@ -21,8 +21,13 @@ export default {
     props: ['isInEditMode', 'blockContext'],
     data() {
         return {
-            currentTab : this.blockContext.tabs[0]
+            currentTab : this.blockContext.tabs[0],
+            currentIndex : 0,
+            intervalID: null
         };
+    },
+    created() {
+      this.intervalID = window.setInterval(this.nextTab, this.blockContext.rollingTime * 1000);
     },
     methods: {
         deleteBlock: function() {
@@ -34,13 +39,20 @@ export default {
         reloadPage:function(){
           var wv =this.$el.querySelector('webview');
           wv.reload();
+        },
+        nextTab:function(){
+          this.currentIndex=(this.currentIndex+1) % this.blockContext.tabs.length;
+          this.currentTab =  this.blockContext.tabs[this.currentIndex];
         }
 
     },
     watch: {
-       // whenever tab changes, this function will run
-       currentTab: function (newTab) {
-         this.reloadPage();
+       blockContext:{
+         handler:function(){
+         clearInterval(this.intervalID);
+         this.intervalID = window.setInterval(this.nextTab, this.blockContext.rollingTime * 1000);
+       },
+         deep: true
        }
      }
 };
