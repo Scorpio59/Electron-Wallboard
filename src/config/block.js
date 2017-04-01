@@ -10,11 +10,4 @@ export default class Block {
     this.h = 20;
     this.i = id;
   }
-  get RollingTime() { return this.rollingTime; }
-  get Tabs() { return this.tabs; }
-  get X() { return this.x; }
-  get Y() { return this.y; }
-  get W() { return this.w; }
-  get H() { return this.h; }
-  get I() { return this.i; }
 }

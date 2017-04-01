@@ -1,10 +1,9 @@
 import configRepository from 'config/config-repository';
 
 export default class Preset {
-  constructor(id) {
-    this.name = 'Preset' + id;
+  constructor(index) {
+    this.name = 'Preset';
+    this.index = index;
     this.blocks = [configRepository.createBlockSettings()];
   }
-  get Name() { return this.name; }
-  get Blocks() { return this.blocks; }
 }

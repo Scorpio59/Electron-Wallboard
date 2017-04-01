@@ -8,7 +8,6 @@ const {
 	ipcMain
 } = electron;
 
-// import {app, BrowserWindow, Menu} from 'electron';
 const url = require('url');
 const path = require('path');
 const fs = require('fs');
@@ -18,7 +17,7 @@ const fs = require('fs');
 let win;
 var isInEditMode = true;
 var configFileToSave;
-
+const defaultConfigFile = path.join(app.getPath('userData'), 'wallboard.config');
 function toggleMode() {
   isInEditMode = !isInEditMode;
   win.webContents.send('edit-mode', isInEditMode);
@@ -36,24 +35,29 @@ function saveConfig() {
     configFileToSave = fileName;
     win.webContents.send('request-config');
   });
-}
+};
+
+function saveConfigFile(fileName, config) {
+  fs.writeFile(fileName, JSON.stringify(config), function (err) {
+    if (!err) {
+        // TODO Toaseted message'The file has been saved.',
+    } else {
+      dialog.showErrorBox('File Save Error', err);
+    }
+  });
+};
 
 ipcMain.on('config-sent', (evt, confPresets) => {
-  var presets;
   if (confPresets) {
-    if (!configFileToSave) return;
-    fs.writeFile(configFileToSave, JSON.stringify(confPresets[0]), function (err) {
-      if (!err) {
-        dialog.showMessageBox({
-          message: 'The file has been saved.',
-          buttons: ['OK']
-        });
-      } else {
-        dialog.showErrorBox('File Save Error', err);
-      }
-    });
+    if (configFileToSave) {
+      saveConfigFile(configFileToSave, confPresets);
+      configFileToSave = null;
+    } else {
+      saveConfigFile(defaultConfigFile, confPresets);
+    }
   }
 });
+
 // === End Of Export
 /* Configuration Import */
 function onConfigFileRead(err, data) {
@@ -64,28 +68,31 @@ function onConfigFileRead(err, data) {
 }
 
 function onImportConfig(fileName) {
-  if (!fileName) return;
-  fs.readFile(fileName[0], 'utf-8', onConfigFileRead);
+  if (!fileName || !fs.existsSync(fileName)) return;
+  fs.readFile(fileName, 'utf-8', onConfigFileRead);
 }
 
 function importConfig() {
   dialog.showOpenDialog({
     title: 'Import configuration in file',
+    defaultPath: configFileToSave,
     filters: [{
       name: 'Config file',
       extensions: ['json']
     }]
-  }, onImportConfig);
+  }, (files) => onImportConfig(files[0]));
 }
 // === End Of Import
 
 function SetGlobalShortcut() {
-  var array = [...Array(12).keys()];
+  var array = [...Array(8).keys()];
   for (let i in array) { // eslint-disable-line prefer-const
     const u = parseInt(i) + 1;
-    console.log('F' + u);
     globalShortcut.register('F' + u, () => {
       win.webContents.send('select-preset-index', i);
+    });
+    globalShortcut.register('Ctrl +F' + u, () => {
+      win.webContents.send('save-currentpreset-in-index', i);
     });
   }
 }
@@ -95,7 +102,8 @@ function createWindow() {
 	// Create the browser window.
   win = new BrowserWindow({
     width: 1200,
-    height: 800
+    height: 800,
+    show: false
   });
 
   const template = [{
@@ -134,10 +142,6 @@ function createWindow() {
     ]
   },
   {
-    role: 'reload',
-    accelerator: 'F5'
-  },
-  {
     role: 'about'
   }
   ];
@@ -152,13 +156,10 @@ function createWindow() {
     slashes: true
   }));
 
-	// See index.dev.js
-
-	// Open the DevTools.
-	// win.webContents.openDevTools();
-
-	// add the vuejs extension
-	// BrowserWindow.addDevToolsExtension('resources/vuejs-devtool');
+  win.once('ready-to-show', () => {
+    onImportConfig(defaultConfigFile);
+    win.show();
+  });
 
 	// Emitted when the window is closed.
   win.on('closed', () => {

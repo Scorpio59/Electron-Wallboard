@@ -6,7 +6,6 @@ class ConfigRepository {
   constructor() {
     this.tabIndex = -1;
     this.blockIndex = -1;
-    this.presetIndex = -1;
   };
 
   createTabBlockSettings() {
@@ -19,9 +18,8 @@ class ConfigRepository {
     return new Block(this.blockIndex);
   };
 
-  createPreset() {
-    this.presetIndex = this.presetIndex + 1;
-    return new Preset(this.presetIndex);
+  createPreset(index) {
+    return new Preset(index);
   };
 }
 

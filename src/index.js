@@ -1,5 +1,6 @@
 const Vue = require('vue/dist/vue.js');
 import VueMaterial from 'vue-material';
+import _ from 'lodash';
 import 'vue-material/dist/vue-material.css';
 import configRepository from 'config/config-repository';
 const electron = require('electron');
@@ -39,6 +40,14 @@ var mainView = new Vue({ // eslint-disable-line vars-on-top
       this.showModal = true;
       this.viewData = data;
     }
+  },
+  watch: {
+    presets: {
+      handler: _.debounce(function () {
+        ipc.send('config-sent', mainView.$data.presets);
+      }, 500),
+      deep: true
+    }
   }
 });
 ipc.on('edit-mode', (evt, active) => {
@@ -51,17 +60,22 @@ ipc.on('request-config', (evt) => {
 });
 ipc.on('import-config', (evt, config) => {
   mainView.$data.presets = config;
+  mainView.$data.currentPreset = mainView.$data.presets[0];
 });
 ipc.on('select-preset-index', (evt, index) => {
   if (mainView.$data.presets.length > index) {
     mainView.$data.currentPreset = mainView.$data.presets[index];
-    mainView.showToastedMessage('Preset ' + mainView.$data.currentPreset.name + ' selected');
+    mainView.showToastedMessage('Preset #' + index + ' : ' + mainView.$data.currentPreset.name + ' selected');
   }
 });
-bus.$on('open-webview-settings', function (blockContext) {
-  mainView.$data.blockContext = blockContext;
-  mainView.$refs.editmodal.$children[0].open();
+
+ipc.on('save-currentpreset-in-index', (evt, index) => {
+  if (mainView.$data.presets.length > index) {
+    mainView.$data.presets[index] = JSON.parse(JSON.stringify(mainView.$data.currentPreset));
+    mainView.showToastedMessage('Preset  #' + index + ' : ' + mainView.$data.currentPreset.name + ' saved');
+  }
 });
+
 bus.$on('open-webview-settings', function (blockContext) {
   mainView.$data.blockContext = blockContext;
   mainView.$refs.editmodal.$children[0].open();
