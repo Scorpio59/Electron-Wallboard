@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { createPreset } from '../config';
+import configRepository from '../config/config-repository'
 import { bus } from '../index.js';
 
 export default {
@@ -68,12 +68,12 @@ export default {
     props: ['presets', 'currentPreset'],
     data() {
         return {
-          newPreset: createPreset()
+          newPreset: configRepository.createPreset()
         };
     },
     methods: {
       addPreset: function(){
-        this.newPreset = createPreset();
+        this.newPreset = configRepository.createPreset();
         this.$refs["newPresetDialog"].open();
       },
       selectPreset: function(preset){

@@ -8,8 +8,8 @@ var WebpackNotifierPlugin = require('webpack-notifier');
 module.exports = {
   resolve: {
     modules: [
-      './src',
-      './node_modules'
+      'src',
+      'node_modules'
     ],
     extensions: ['.js', '.vue', '.json'/*, '.css', '.node'*/],
     alias: { vue: 'vue/dist/vue.js' }
@@ -106,7 +106,7 @@ module.exports = {
   },
   devtool: 'cheap-eval-source-map',
   watchOptions: {
-    ignored: /node_modules|resources|\.git|\.vscode/
+    ignored: /node_modules|resources|\.git|\.vscode|\.tmp/
   },
   target: 'electron'
 };

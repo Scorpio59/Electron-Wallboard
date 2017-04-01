@@ -37,7 +37,7 @@ import {
     SweetModalTab
 } from 'sweet-modal-vue';
 import { bus } from '../index.js';
-import {createTabBlockSettings} from '../config'
+import configRepository from '../config/config-repository'
 
 export default {
     name: 'edit-modal',
@@ -56,7 +56,7 @@ export default {
             this.blockContext.tabs.splice(this.blockContext.tabs.indexOf(tab), 1);
         },
         addTab: function() {
-            this.blockContext.tabs.push(createTabBlockSettings());
+            this.blockContext.tabs.push(configRepository.createTabBlockSettings());
         },
         save: function(){
             this.$parent.$refs.editmodal.$children[0].close();
