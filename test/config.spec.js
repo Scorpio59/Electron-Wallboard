@@ -17,11 +17,4 @@ describe('Config', () => {
       assert(index + 1 === configRepository.blockIndex);
     });
   });
-  describe('createPreset', () => {
-    it('should increment the preset index', () => {
-      var index = configRepository.presetIndex;
-      configRepository.createPreset();
-      assert(index + 1 === configRepository.presetIndex);
-    });
-  });
 });
