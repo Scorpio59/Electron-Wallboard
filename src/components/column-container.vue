@@ -1,6 +1,6 @@
 <template>
 <grid-layout :layout="blocks" :col-num="24" :row-height="20" :is-draggable="isInEditMode" :is-resizable="isInEditMode" :vertical-compact="false" :margin="[0,0]" :use-css-transforms="true">
-    <grid-item v-for="item in blocks" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i" >
+    <grid-item v-for="item in blocks" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i">
         <web-view v-bind:is-in-edit-mode="isInEditMode" v-bind:key="item.i" v-bind:block-context="item" @delete="deleteBlock"></web-view>
     </grid-item>
 </grid-layout>
@@ -11,34 +11,34 @@ import VueGridLayout from 'vue-grid-layout';
 const GridLayout = VueGridLayout.GridLayout;
 const GridItem = VueGridLayout.GridItem;
 export default {
-    name: 'column-container',
-    components: {
-        GridLayout,
-        GridItem
+  name: 'column-container',
+  components: {
+    GridLayout,
+    GridItem
+  },
+  props: ['isInEditMode', 'blocks'],
+  data() {
+    return {};
+  },
+  methods: {
+    deleteBlock: function (item) {
+      if (this.blocks.length > 1) {
+        const index = this.blocks.indexOf(item);
+        this.blocks.splice(index, 1);
+      } else {
+                /* TODO this.showToastedMessage("You can't delete the last column");*/
+      }
     },
-    props: ['isInEditMode', 'blocks'],
-    data() {
-        return {};
-    },
-    methods: {
-        deleteBlock: function(item) {
-            if (this.blocks.length > 1) {
-                var index = this.blocks.indexOf(item)
-                this.blocks.splice(index, 1)
-            } else {
-                /*TODO   this.showToastedMessage("You can't delete the last column");*/
-            }
-        },
-        addRow: function() {
-            this.rows.push({});
-        }
+    addRow: function () {
+      this.rows.push({});
     }
+  }
 };
 </script>
 
 
 <style scoped>
-.vue-grid-item:hover{
+.vue-grid-item:hover {
     cursor: move;
 }
 
