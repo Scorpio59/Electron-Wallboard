@@ -75,7 +75,10 @@ ipc.on('save-currentpreset-in-index', (evt, index) => {
     mainView.showToastedMessage('Preset  #' + index + ' : ' + mainView.$data.currentPreset.name + ' saved');
   }
 });
-
+bus.$on('save-webview-settings', function (blockContext) {
+  var matchBlock = _.chain(mainView.$data.currentPreset.blocks).filter(function (x) { return x.i === blockContext.i; }).first().value();
+  _.merge(matchBlock, blockContext);
+});
 bus.$on('open-webview-settings', function (blockContext) {
   mainView.$data.blockContext = blockContext;
   mainView.$refs.editmodal.$children[0].open();

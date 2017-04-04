@@ -1,5 +1,5 @@
 <template>
-<sweet-modal title="Block settings" overlay-theme="dark" >
+  <sweet-modal title="Block settings" overlay-theme="dark" >
     <template slot="button">
       <md-button class="md-raised md-primary" @click.native="save">Save</md-button>
     </template>
@@ -28,7 +28,6 @@
       </md-list>
     </form>
   </sweet-modal>
-
 </template>
 
 <script>
@@ -59,6 +58,7 @@ export default {
             this.blockContext.tabs.push(configRepository.createTabBlockSettings());
         },
         save: function(){
+            bus.$emit('save-webview-settings', this.blockContext);
             this.$parent.$refs.editmodal.$children[0].close();
         }
     }

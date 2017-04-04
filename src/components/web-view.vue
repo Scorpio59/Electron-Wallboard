@@ -5,9 +5,15 @@
     <div class="md-fab  md-dense md-fab-top-left edition">
         <md-button v-if="isInEditMode" class="md-icon-button md-mini md-raised md-primary" @click.native="editBlock">
             <md-icon>edit</md-icon>
+            <md-tooltip md-direction="right">Edit this block</md-tooltip>
         </md-button>
         <md-button v-if="isInEditMode" class="md-icon-button md-mini md-raised  md-warn" @click.native="deleteBlock">
             <md-icon>delete</md-icon>
+            <md-tooltip md-direction="right">Delete this block</md-tooltip>
+        </md-button>
+        <md-button v-if="isInEditMode" class="md-icon-button md-mini md-raised  md-accent" @click.native="openExternal">
+            <md-icon>open_in_new</md-icon>
+            <md-tooltip md-direction="right">Open in the browser</md-tooltip>
         </md-button>
     </div>
 </section>
@@ -15,8 +21,9 @@
 
 <script>
 import { bus } from '../index.js';
-
-export default {
+import { shell } from 'electron'
+import Vue from 'vue/dist/vue.js';
+const  webviewVM ={
     name: 'web-view',
     props: ['isInEditMode', 'blockContext'],
     data() {
@@ -29,7 +36,6 @@ export default {
     },
     created() {
       this.intervalID = window.setInterval(this.nextTab, this.blockContext.rollingTime * 1000);
-
     },
     mounted(){
       this.webview = this.$el.getElementsByTagName('webview')[0];
@@ -42,14 +48,15 @@ export default {
             this.$emit('delete', this.blockContext);
         },
         editBlock: function() {
-            bus.$emit('open-webview-settings', this.blockContext)
+            var editBlock = JSON.parse(JSON.stringify(this.blockContext));
+            bus.$emit('open-webview-settings', editBlock);
         },
         reloadPage:function(){
           var wv =this.$el.querySelector('webview');
           wv.reload();
         },
         nextTab:function(){
-          this.currentIndex=(this.currentIndex+1) % this.blockContext.tabs.length;
+          this.currentIndex = (this.currentIndex+1) % this.blockContext.tabs.length;
           this.currentTab =  this.blockContext.tabs[this.currentIndex];
         },
         autoZoom:function(){
@@ -67,6 +74,7 @@ export default {
                 var zoomFactorHeight = webviewHeight / clientRect.height;
                 var zoomFactorWidth = webviewWidth / clientRect.width;
                 var zoomFactor = Math.min(zoomFactorWidth,zoomFactorHeight);
+                this.currentTab.zoomFactor = zoomFactor;
                 this.webview.setZoomFactor(zoomFactor);
               }
               setTimeout(() => {
@@ -77,16 +85,16 @@ export default {
                   }, 100)
               });
             }
+          },
+          openExternal:function(){
+              shell.openExternal(this.currentTab.url);
           }
     },
     watch: {
-       blockContext:{
-         handler: _.debounce(function(){
+       'blockContext.rollingTime':_.debounce(function(){
              clearInterval(this.intervalID);
              this.intervalID = window.setInterval(this.nextTab, this.blockContext.rollingTime * 1000);
            },1000),
-         deep: true
-       },
        isInEditMode: function(newValue)  {
           if(newValue)
           {
@@ -101,9 +109,10 @@ export default {
               this.autoZoom()
             },1000),
           deep: true
-        },
+        }
      }
 };
+export default webviewVM
 
 
 </script>
