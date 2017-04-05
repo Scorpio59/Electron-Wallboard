@@ -15,6 +15,7 @@
             <md-icon>open_in_new</md-icon>
             <md-tooltip md-direction="right">Open in the browser</md-tooltip>
         </md-button>
+        <slider  v-model="zoomSlider" :slider-min="0.98" :slider-max="1.02" ></slider>
     </div>
 </section>
 </template>
@@ -31,7 +32,9 @@ const  webviewVM ={
             currentTab : this.blockContext.tabs[0],
             currentIndex : 0,
             intervalID: null,
-            webview:null
+            webview:null,
+            zoomSlider:1,
+            zoomTimerId:null
         };
     },
     created() {
@@ -75,7 +78,7 @@ const  webviewVM ={
                 var zoomFactorWidth = webviewWidth / clientRect.width;
                 var zoomFactor = Math.min(zoomFactorWidth,zoomFactorHeight);
                 this.currentTab.zoomFactor = zoomFactor;
-                this.webview.setZoomFactor(zoomFactor);
+
               }
               setTimeout(() => {
                     this.webview.getWebContents().executeJavaScript(code,false).then((result) =>{
@@ -88,6 +91,21 @@ const  webviewVM ={
           },
           openExternal:function(){
               shell.openExternal(this.currentTab.url);
+          },
+          zoom: function(){
+            if(this.zoomSlider===1)
+            {
+
+              if(this.zoomTimerId)
+              {
+                clearInterval(this.zoomTimerId);
+              }
+            }
+            else if (!this.zoomTimerId){
+                this.zoomTimerId = window.setInterval(this.zoom,30);
+            }else {
+                this.currentTab.zoomFactor *= this.zoomSlider  ;
+            }
           }
     },
     watch: {
@@ -109,6 +127,12 @@ const  webviewVM ={
               this.autoZoom()
             },1000),
           deep: true
+        },
+        zoomSlider: function() {
+          this.zoom();
+        },
+        'currentTab.zoomFactor': function(value){
+            this.webview.setZoomFactor(value);
         }
      }
 };

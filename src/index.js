@@ -2,6 +2,7 @@ const Vue = require('vue/dist/vue.js');
 import VueMaterial from 'vue-material';
 import _ from 'lodash';
 import 'vue-material/dist/vue-material.css';
+import 'nouislider/distribute/nouislider.css';
 import configRepository from 'config/config-repository';
 const electron = require('electron');
 
@@ -9,6 +10,7 @@ const ipc = electron.ipcRenderer;
 
 Vue.use(VueMaterial);
 export const bus = new Vue();
+Vue.component('slider', require('./components/slider.vue'));
 Vue.component('column-container', require('./components/column-container.vue'));
 Vue.component('web-view', require('./components/web-view.vue'));
 Vue.component('menu-toolbar', require('./components/menu-toolbar.vue'));
