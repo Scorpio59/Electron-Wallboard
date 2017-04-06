@@ -24,10 +24,11 @@ var mainView = new Vue({ // eslint-disable-line vars-on-top
     showModal: false,
     blockContext: null,
     toastedMessage: null,
-    presets: [configRepository.createPreset()],
+    presets: configRepository.presets,
     currentPreset: null
   },
   created() {
+    this.presets.push(configRepository.createPreset(1));
     this.currentPreset = this.presets[0];
   },
   methods: {
@@ -65,17 +66,17 @@ ipc.on('import-config', (evt, config) => {
   mainView.$data.currentPreset = mainView.$data.presets[0];
 });
 ipc.on('select-preset-index', (evt, index) => {
-  if (mainView.$data.presets.length > index) {
-    mainView.$data.currentPreset = mainView.$data.presets[index];
+  var selectedPreset = configRepository.find(index);
+  if (selectedPreset) {
+    mainView.$data.currentPreset = selectedPreset;
     mainView.showToastedMessage('Preset #' + index + ' : ' + mainView.$data.currentPreset.name + ' selected');
   }
 });
 
 ipc.on('save-currentpreset-in-index', (evt, index) => {
-  if (mainView.$data.presets.length > index) {
-    mainView.$data.presets[index] = JSON.parse(JSON.stringify(mainView.$data.currentPreset));
-    mainView.showToastedMessage('Preset  #' + index + ' : ' + mainView.$data.currentPreset.name + ' saved');
-  }
+  configRepository.replacePreset(index, JSON.parse(JSON.stringify(mainView.$data.currentPreset)));
+  mainView.showToastedMessage('Preset  #' + index + ' : ' + mainView.$data.currentPreset.name + ' saved');
+  mainView.$data.currentPreset = configRepository.find(index);
 });
 bus.$on('save-webview-settings', function (blockContext) {
   var matchBlock = _.chain(mainView.$data.currentPreset.blocks).filter(function (x) { return x.i === blockContext.i; }).first().value();

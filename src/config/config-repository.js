@@ -1,11 +1,13 @@
 import Block from 'config/block';
 import Preset from 'config/preset';
 import TabBlock from 'config/tab-block';
+import _ from 'lodash';
 
 class ConfigRepository {
   constructor() {
     this.tabIndex = -1;
     this.blockIndex = -1;
+    this.presets = [];
   };
 
   createTabBlockSettings() {
@@ -21,6 +23,22 @@ class ConfigRepository {
   createPreset(index) {
     return new Preset(index);
   };
+
+  find(index) {
+    return _.chain(this.presets).filter(function (preset) { return preset.index === index; }).first().value();
+  }
+
+  replacePreset(index, preset) {
+    preset.index = index;
+    const presetToReplace = find(index);
+    if (presetToReplace) {
+      const indexMatch = this.presets.indexOf(presetToReplace);
+      this.presets.splice(indexMatch, 1, preset);
+    } else {
+      this.presets.push(preset);
+    }
+  }
+
 }
 
 // Singleton
