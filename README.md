@@ -1,5 +1,5 @@
 # Electron-Wallboard
-https://travis-ci.org/Scorpio59/Electron-Wallboard.svg?branch=master
+![Travis build](https://travis-ci.org/Scorpio59/Electron-Wallboard.svg?branch=master)
 
 This desktop application used Eletron.
 
