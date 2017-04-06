@@ -15,7 +15,7 @@
             <md-icon>open_in_new</md-icon>
             <md-tooltip md-direction="right">Open in the browser</md-tooltip>
         </md-button>
-        <slider  v-model="zoomSlider" :slider-min="0.98" :slider-max="1.02" ></slider>
+        <slider v-if="isInEditMode" v-model="zoomSlider" :slider-min="0.98" :slider-max="1.02" ></slider>
     </div>
 </section>
 </template>
@@ -101,10 +101,14 @@ const  webviewVM ={
                 clearInterval(this.zoomTimerId);
               }
             }
-            else if (!this.zoomTimerId){
-                this.zoomTimerId = window.setInterval(this.zoom,30);
-            }else {
-                this.currentTab.zoomFactor *= this.zoomSlider  ;
+            else
+            {
+              if (!this.zoomTimerId){
+                  this.zoomTimerId = window.setInterval(this.zoom,30);
+              }
+              if(this.currentTab.zoomFactor > 0.2 && this.currentTab.zoomFactor < 5) {
+                  this.currentTab.zoomFactor *= this.zoomSlider  ;
+              }
             }
           }
     },

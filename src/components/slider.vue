@@ -1,15 +1,17 @@
 <template>
   <div>
-    <md-button class="md-icon-button md-primary" @click.native="zoomIn">
-        <md-icon>zoom_in</md-icon>
-        <md-tooltip md-direction="right">Zoom +</md-tooltip>
-    </md-button>
-    <div :id="sliderId"
-          v-bind:value="value"
-          v-on:input="updateValue($event.target.value)"></div>
+
     <md-button class="md-icon-button md-primary" @click.native="zoomOut">
         <md-icon>zoom_out</md-icon>
         <md-tooltip md-direction="right">Zoom -</md-tooltip>
+    </md-button>
+    <div :id="sliderId"
+          class="vertical-slider"
+          v-bind:value="value"
+          v-on:input="updateValue($event.target.value)"></div>
+    <md-button class="md-icon-button md-primary" @click.native="zoomIn">
+        <md-icon>zoom_in</md-icon>
+        <md-tooltip md-direction="right">Zoom +</md-tooltip>
     </md-button>
   </div>
 </template>
@@ -29,6 +31,9 @@ export default  {
         var slider = document.getElementById(this.sliderId)
         noUiSlider.create(slider, {
             start: this.value,
+            orientation: 'vertical',
+            animate: true,
+            animationDuration: 100,
             range: {
                 'min': [this.sliderMin],
                 'max': [this.sliderMax]
@@ -36,12 +41,15 @@ export default  {
         })
         slider.noUiSlider.on('update', this.updateValue);
         slider.noUiSlider.on('change', function ( values, handle ) {
-          	if ( values[handle] < 1 ) {
-          		slider.noUiSlider.set(1);
-          	} else if ( values[handle] > 1 ) {
+          	if ( values[handle] != 1 ) {
           		slider.noUiSlider.set(1);
           	}
           });
+          slider.noUiSlider.on('set', function ( values, handle ) {
+              if ( values[handle] != 1 ) {
+                setTimeout(() => {slider.noUiSlider.set(1);}, 10);
+              }
+            });
     },
     methods: {
         updateValue: function (value) {
@@ -55,11 +63,12 @@ export default  {
         },
         zoomIn: function(){
             var slider = document.getElementById(this.sliderId)
-          slider.noUiSlider.set(this.sliderMax);
+            slider.noUiSlider.set(this.sliderMax);
+
         },
         zoomOut: function(){
-            var slider = document.getElementById(this.sliderId)
-            slider.noUiSlider.set(this.sliderMin);
+          var slider = document.getElementById(this.sliderId)
+          slider.noUiSlider.set(this.sliderMin);
         }
 
     }
@@ -68,5 +77,7 @@ export default  {
 
 
 <style scoped>
-
+.vertical-slider{
+  height: 100px;
+}
 </style>
