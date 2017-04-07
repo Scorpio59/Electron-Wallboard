@@ -7,5 +7,6 @@ export default class TabBlock {
     this.autoZoom = false;
     this.zoomFactor = 1;
     this.selector = undefined;
+    this.positionScroll = "{'top':0,'left':0}";
   }
 }

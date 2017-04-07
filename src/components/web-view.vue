@@ -15,6 +15,10 @@
             <md-icon>open_in_new</md-icon>
             <md-tooltip md-direction="right">Open in the browser</md-tooltip>
         </md-button>
+        <md-button v-if="isInEditMode" class="md-icon-button md-mini md-raised  md-accent" @click.native="savePosition">
+            <md-icon>transform</md-icon>
+            <md-tooltip md-direction="right">Save the position</md-tooltip>
+        </md-button>
         <slider v-if="isInEditMode" v-model="zoomSlider" :slider-min="0.98" :slider-max="1.02" ></slider>
     </div>
 </section>
@@ -78,7 +82,6 @@ const  webviewVM ={
                 var zoomFactorWidth = webviewWidth / clientRect.width;
                 var zoomFactor = Math.min(zoomFactorWidth,zoomFactorHeight);
                 this.currentTab.zoomFactor = zoomFactor;
-
               }
               setTimeout(() => {
                     this.webview.getWebContents().executeJavaScript(code,false).then((result) =>{
@@ -93,23 +96,26 @@ const  webviewVM ={
               shell.openExternal(this.currentTab.url);
           },
           zoom: function(){
-            if(this.zoomSlider===1)
-            {
-
+            if(this.zoomSlider===1){
               if(this.zoomTimerId)
               {
                 clearInterval(this.zoomTimerId);
               }
             }
-            else
-            {
+            else{
               if (!this.zoomTimerId){
-                  this.zoomTimerId = window.setInterval(this.zoom,30);
+                  this.zoomTimerId = window.setInterval(this.zoom, 30);
               }
               if(this.currentTab.zoomFactor > 0.2 && this.currentTab.zoomFactor < 5) {
                   this.currentTab.zoomFactor *= this.zoomSlider  ;
               }
             }
+          },
+          savePosition: function(){
+            let code = `JSON.stringify({top:document.body.scrollTop,left:document.body.scrollLeft})`;
+            this.webview.getWebContents().executeJavaScript(code,false).then((result) =>{
+                  this.currentTab.positionScroll = JSON.parse(result);
+            });
           }
     },
     watch: {
