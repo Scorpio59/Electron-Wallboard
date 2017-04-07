@@ -89,10 +89,10 @@ function SetGlobalShortcut() {
   for (let i in array) { // eslint-disable-line prefer-const
     const u = parseInt(i) + 1;
     globalShortcut.register('F' + u, () => {
-      win.webContents.send('select-preset-index', i);
+      win.webContents.send('select-preset-index', u);
     });
     globalShortcut.register('Ctrl +F' + u, () => {
-      win.webContents.send('save-currentpreset-in-index', i);
+      win.webContents.send('save-currentpreset-in-index', u);
     });
   }
 }

@@ -5,9 +5,9 @@
         <md-menu md-align-trigger>
             <md-button md-menu-trigger>Presets</md-button>
             <md-menu-content>
-                <md-menu-item v-for="(preset, index) in presets" @click.native="selectPreset(preset)">
+                <md-menu-item v-for="(preset, index) in presets" @click.native="editPreset(preset)">
                     <md-icon v-show="preset === currentPreset">check_box</md-icon>
-                    <span>{{index +"# :"+ preset.name}} <md-icon>rate_review</md-icon></span>
+                    <span>{{preset.index +" :"+ preset.name}} <md-icon @click.native="editPreset(preset)">rate_review</md-icon></span>
                 </md-menu-item>
                 <md-menu-item @click.native="addPreset" >
                     <md-icon>add</md-icon>
@@ -50,8 +50,16 @@
       md-ok-text="Create"
       md-cancel-text="Cancel"
       v-model="newPreset.name"
-      @close="onClose"
+      @close="onNewClose"
       ref="newPresetDialog">
+    </md-dialog-prompt>
+    <md-dialog-prompt
+      md-title="Edit preset"
+      md-ok-text="Save"
+      md-cancel-text="Cancel"
+      v-model="newPreset.name"
+      @close="onEditClose"
+      ref="editPresetDialog">
     </md-dialog-prompt>
 </md-whiteframe>
 
@@ -77,9 +85,19 @@ export default {
         this.$refs["newPresetDialog"].open();
       },
       selectPreset: function(preset){
-        bus.$emit('select-preset', preset)
+        bus.$emit('select-preset', preset);
       },
-      onClose(type) {
+      editPreset: function(preset){
+        this.newPreset = preset;
+        this.$refs["editPresetDialog"].open();
+      },
+      onEditClose(type) {
+        if(type === 'ok')
+        {
+            bus.$emit('select-preset', this.newPreset)
+        }
+      },
+      onNewClose(type) {
         if(type === 'ok')
         {
             this.presets.push(this.newPreset);

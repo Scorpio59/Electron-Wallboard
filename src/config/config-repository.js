@@ -20,13 +20,14 @@ class ConfigRepository {
     return new Block(this.blockIndex);
   };
 
-  createPreset(index) {
-    return new Preset(index);
+  createPreset(data) {
+    return new Preset(data);
   };
 
   find(index) {
+    index = index * 1; // parse in int
     return _.chain(this.presets).filter(function (preset) { return preset.index === index; }).first().value();
-  }
+  };
 
   replacePreset(index, preset) {
     preset.index = index;
@@ -37,7 +38,7 @@ class ConfigRepository {
     } else {
       this.presets.push(preset);
     }
-  }
+  };
 
 }
 
