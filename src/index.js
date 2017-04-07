@@ -10,6 +10,7 @@ const ipc = electron.ipcRenderer;
 
 Vue.use(VueMaterial);
 export const bus = new Vue();
+Vue.component('toasted', require('./components/toasted.vue'));
 Vue.component('slider', require('./components/slider.vue'));
 Vue.component('column-container', require('./components/column-container.vue'));
 Vue.component('web-view', require('./components/web-view.vue'));
@@ -23,21 +24,16 @@ var mainView = new Vue({ // eslint-disable-line vars-on-top
     isInEditMode: true,
     showModal: false,
     blockContext: null,
-    toastedMessage: null,
     presets: configRepository.presets,
     currentPreset: null
   },
   created() {
-    this.presets.push(configRepository.createPreset(1));
+    this.presets.push(configRepository.createPreset({ index: 1 }));
     this.currentPreset = this.presets[0];
   },
   methods: {
     addBlock: function () {
       this.currentPreset.blocks.push(configRepository.createBlockSettings());
-    },
-    showToastedMessage: function (message) {
-      this.toastedMessage = message;
-      this.$refs.snackbar.open();
     },
     openModal: function (data) {
       this.showModal = true;
@@ -55,7 +51,7 @@ var mainView = new Vue({ // eslint-disable-line vars-on-top
 });
 ipc.on('edit-mode', (evt, active) => {
   mainView._data.isInEditMode = active; // eslint-disable-line no-underscore-dangle
-  mainView.showToastedMessage(active ? 'Edition mode' : 'Display mode');
+  bus.$emit('toasted-message', active ? 'Edition mode' : 'Display mode');
   console.log('Receive signal to editmode: ' + active);
 });
 ipc.on('request-config', (evt) => {
@@ -69,13 +65,13 @@ ipc.on('select-preset-index', (evt, index) => {
   var selectedPreset = configRepository.find(index);
   if (selectedPreset) {
     mainView.$data.currentPreset = selectedPreset;
-    mainView.showToastedMessage('Preset #' + index + ' : ' + mainView.$data.currentPreset.name + ' selected');
+    bus.$emit('toasted-message', 'Preset #' + index + ' : ' + mainView.$data.currentPreset.name + ' selected');
   }
 });
 
 ipc.on('save-currentpreset-in-index', (evt, index) => {
-  configRepository.replacePreset(index, JSON.parse(JSON.stringify(mainView.$data.currentPreset)));
-  mainView.showToastedMessage('Preset  #' + index + ' : ' + mainView.$data.currentPreset.name + ' saved');
+  configRepository.replacePreset(index, configRepository.createPreset(JSON.parse(JSON.stringify(mainView.$data.currentPreset))));
+  bus.$emit('toasted-message', 'Preset  #' + index + ' : ' + mainView.$data.currentPreset.name + ' saved');
   mainView.$data.currentPreset = configRepository.find(index);
 });
 bus.$on('save-webview-settings', function (blockContext) {
