@@ -1,7 +1,7 @@
 {
   "name": "Electron-Wallboard",
   "version": "1.0.0",
-  "description": "",
+  "description": "Application to display many dashboard on a single screen, especially TV",
   "main": "main.js",
   "scripts": {
     "build": "webpack -p",
@@ -10,7 +10,27 @@
     "dev": "electron main.dev.js",
     "test": "mocha-webpack --webpack-config webpack.config.test.js \"test/**/*.spec.js\"",
     "lint:css": "stylelint **/*.vue --syntax scss",
-    "lint:js": "eslint --format node_modules/eslint-friendly-formatter **/*.js **/*.vue"
+    "lint:js": "eslint --format node_modules/eslint-friendly-formatter **/*.js **/*.vue",
+    "pack": "build --dir",
+    "dist": "build",
+    "postinstall": "install-app-deps"
+  },
+  "build": {
+    "appId": "electron.wallboard",
+    "productName": "Electron-Wallboard",
+    "files": [
+      "dist/*",
+      "dist/index.html",
+      "node_modules/**/*",
+      "main.js",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis"
+    }
+  },
+  "bin": {
+    "electron": "./node_modules/.bin/electron"
   },
   "repository": {
     "type": "git",
@@ -32,6 +52,7 @@
     "css-loader": "^0.27.3",
     "devtron": "^1.4.0",
     "electron": "^1.6.2",
+    "electron-builder": "^16.7.0",
     "electron-debug": "^1.1.0",
     "electron-devtools-installer": "^2.1.0",
     "electron-reload": "^1.1.0",
