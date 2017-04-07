@@ -1,5 +1,6 @@
 # Electron-Wallboard
 ![Travis build](https://travis-ci.org/Scorpio59/Electron-Wallboard.svg?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/Scorpio59/Electron-Wallboard/badge.svg?branch=master)](https://coveralls.io/github/Scorpio59/Electron-Wallboard?branch=master)
 
 This desktop application used Eletron.
 
