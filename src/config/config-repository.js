@@ -4,6 +4,11 @@ import TabBlock from 'config/tab-block';
 import _ from 'lodash';
 
 class ConfigRepository {
+/**
+ * Display block meta-data
+ * @constructor
+ * @param {Number} id Block's id
+ */
   constructor() {
     this.tabIndex = -1;
     this.blockIndex = -1;

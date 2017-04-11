@@ -36,32 +36,32 @@ import {
     SweetModalTab
 } from 'sweet-modal-vue';
 import { bus } from '../index.js';
-import configRepository from '../config/config-repository'
+import configRepository from '../config/config-repository';
 
 export default {
-    name: 'edit-modal',
-    components: {
-        SweetModal,
-        SweetModalTab
-    },
-    props: ['blockContext'],
-    data() {
-        return {
+  name: 'edit-modal',
+  components: {
+    SweetModal,
+    SweetModalTab
+  },
+  props: ['blockContext'],
+  data() {
+    return {
 
-        };
+    };
+  },
+  methods: {
+    removeTab: function (tab) {
+      this.blockContext.tabs.splice(this.blockContext.tabs.indexOf(tab), 1);
     },
-    methods: {
-        removeTab: function(tab) {
-            this.blockContext.tabs.splice(this.blockContext.tabs.indexOf(tab), 1);
-        },
-        addTab: function() {
-            this.blockContext.tabs.push(configRepository.createTabBlockSettings());
-        },
-        save: function(){
-            bus.$emit('save-webview-settings', this.blockContext);
-            this.$parent.$refs.editmodal.$children[0].close();
-        }
+    addTab: function () {
+      this.blockContext.tabs.push(configRepository.createTabBlockSettings());
+    },
+    save: function () {
+      bus.$emit('save-webview-settings', this.blockContext);
+      this.$parent.$refs.editmodal.$children[0].close();
     }
+  }
 };
 </script>
 

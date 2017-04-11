@@ -68,43 +68,41 @@
 </template>
 
 <script>
-import configRepository from '../config/config-repository'
+import configRepository from '../config/config-repository';
 import { bus } from '../index.js';
 
 export default {
-    name: 'menu-toolbar',
-    props: ['presets', 'currentPreset'],
-    data() {
-        return {
-          newPreset: configRepository.createPreset()
-        };
+  name: 'menu-toolbar',
+  props: ['presets', 'currentPreset'],
+  data() {
+    return {
+      newPreset: configRepository.createPreset()
+    };
+  },
+  methods: {
+    addPreset: function () {
+      this.newPreset = configRepository.createPreset();
+      this.$refs.newPresetDialog.open();
     },
-    methods: {
-      addPreset: function(){
-        this.newPreset = configRepository.createPreset();
-        this.$refs["newPresetDialog"].open();
-      },
-      selectPreset: function(preset){
-        bus.$emit('select-preset', preset);
-      },
-      editPreset: function(preset){
-        this.newPreset = preset;
-        this.$refs["editPresetDialog"].open();
-      },
-      onEditClose(type) {
-        if(type === 'ok')
-        {
-            bus.$emit('select-preset', this.newPreset)
-        }
-      },
-      onNewClose(type) {
-        if(type === 'ok')
-        {
-            this.presets.push(this.newPreset);
-            bus.$emit('select-preset', this.newPreset)
-        }
+    selectPreset: function (preset) {
+      bus.$emit('select-preset', preset);
+    },
+    editPreset: function (preset) {
+      this.newPreset = preset;
+      this.$refs.editPresetDialog.open();
+    },
+    onEditClose(type) {
+      if (type === 'ok') {
+        bus.$emit('select-preset', this.newPreset);
+      }
+    },
+    onNewClose(type) {
+      if (type === 'ok') {
+        this.presets.push(this.newPreset);
+        bus.$emit('select-preset', this.newPreset);
       }
     }
+  }
 };
 </script>
 

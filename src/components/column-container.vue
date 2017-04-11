@@ -8,7 +8,9 @@
 
 <script>
 import VueGridLayout from 'vue-grid-layout';
-import { bus } from '../index.js';
+import {
+    bus
+} from '../index.js';
 const GridLayout = VueGridLayout.GridLayout;
 const GridItem = VueGridLayout.GridItem;
 export default {
@@ -18,7 +20,7 @@ export default {
     GridItem
   },
   props: ['isInEditMode', 'blocks'],
-  data() {
+  data: function () {
     return {};
   },
   methods: {
@@ -27,7 +29,7 @@ export default {
         const index = this.blocks.indexOf(item);
         this.blocks.splice(index, 1);
       } else {
-          bus.$emit('toasted-message',"You can't delete the last column");
+        bus.$emit('toasted-message', "You can't delete the last column");
       }
     },
     addRow: function () {

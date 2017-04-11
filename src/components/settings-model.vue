@@ -36,27 +36,27 @@ import {
     SweetModal,
     SweetModalTab
 } from 'sweet-modal-vue';
-import defaultTabBlockSettings from '../config'
+import defaultTabBlockSettings from '../config';
 export default {
-    name: 'edit-modal',
-    components: {
-        SweetModal,
-        SweetModalTab
-    },
-    props: ['blockContext'],
-    data() {
-        return {
+  name: 'edit-modal',
+  components: {
+    SweetModal,
+    SweetModalTab
+  },
+  props: ['blockContext'],
+  data() {
+    return {
 
-        };
+    };
+  },
+  methods: {
+    removeTab: function (tab) {
+      this.blockContext.tabs.splice(this.tabs.indexOf(tab), 1);
     },
-    methods: {
-        removeTab: function(tab) {
-            this.blockContext.tabs.splice(this.tabs.indexOf(tab), 1);
-        },
-        addTab: function() {
-            this.blockContext.tabs.push(defaultTabBlockSettings);
-        }
+    addTab: function () {
+      this.blockContext.tabs.push(defaultTabBlockSettings);
     }
+  }
 };
 </script>
 
