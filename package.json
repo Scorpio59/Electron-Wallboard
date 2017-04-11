@@ -11,6 +11,7 @@
     "test": "mocha-webpack --webpack-config webpack.config.test.js \"test/**/*.spec.js\"",
     "lint:css": "stylelint **/*.vue --syntax scss",
     "lint:js": "eslint --format node_modules/eslint-friendly-formatter **/*.js **/*.vue",
+    "lint:fix": "eslint --fix --format node_modules/eslint-friendly-formatter **/*.js **/*.vue",
     "pack": "build --dir",
     "dist": "build",
     "postinstall": "install-app-deps"

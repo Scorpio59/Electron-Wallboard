@@ -16,7 +16,9 @@
         "semi": ["error", "always"],
         "no-console": "off",
         "no-unused-vars": "warn",
-        "no-continue": "warn"
+        "no-continue": "warn",
+        "require-jsdoc": "warn",
+        "valid-jsdoc": "warn"
     },
     "env": {
         "es6": true,
