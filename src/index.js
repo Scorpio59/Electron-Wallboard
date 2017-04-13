@@ -12,6 +12,7 @@ Vue.use(VueMaterial);
 export const bus = new Vue();
 Vue.component('toasted', require('./components/toasted.vue'));
 Vue.component('slider', require('./components/slider.vue'));
+Vue.component('navigation-control', require('./components/navigation-control.vue'));
 Vue.component('column-container', require('./components/column-container.vue'));
 Vue.component('web-view', require('./components/web-view.vue'));
 Vue.component('menu-toolbar', require('./components/menu-toolbar.vue'));
@@ -19,7 +20,6 @@ Vue.component('edit-modal', require('./components/edit-modal.vue'));
 
 var mainView = new Vue({ // eslint-disable-line vars-on-top
   el: '#mainView',
-
   data: {
     isInEditMode: true,
     showModal: false,
@@ -28,7 +28,9 @@ var mainView = new Vue({ // eslint-disable-line vars-on-top
     currentPreset: null
   },
   created() {
-    this.presets.push(configRepository.createPreset({ index: 1 }));
+    this.presets.push(configRepository.createPreset({
+      index: 1
+    }));
     this.currentPreset = this.presets[0];
   },
   methods: {
@@ -75,8 +77,14 @@ ipc.on('save-currentpreset-in-index', (evt, index) => {
   mainView.$data.currentPreset = configRepository.find(index);
 });
 bus.$on('save-webview-settings', function (blockContext) {
-  var matchBlock = _.chain(mainView.$data.currentPreset.blocks).filter(function (x) { return x.i === blockContext.i; }).first().value();
-  _.merge(matchBlock, blockContext);
+  var blocks = mainView.$data.currentPreset.blocks;
+  // Find item index using indexOf+find
+  var index = _.indexOf(blocks, _.find(blocks, function (x) {
+    return x.i === blockContext.i;
+  }));
+
+  // Replace item at index using native splice
+  blocks.splice(index, 1, blockContext);
 });
 bus.$on('open-webview-settings', function (blockContext) {
   mainView.$data.blockContext = blockContext;
