@@ -5,48 +5,36 @@
     <meta charset="UTF-8">
     <title>Eletron Wallboard</title>
     <% if (htmlWebpackPlugin.options.appModules) { %>
-        <!-- Add `app/node_modules` to global paths so `require` works properly in development -->
-        <script>
-            require('module').globalPaths.push('<%= htmlWebpackPlugin.options.appModules.replace(/\\/g, '\\\\') %>')
-        </script>
-        <% } %>
-            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
-            <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-            <!-- TODO move in less file -->
-            <style>
-                /*Override style from grid layout */
+    <!-- Add `app/node_modules` to global paths so `require` works properly in development -->
+    <script>
+        require('module').globalPaths.push('<%= htmlWebpackPlugin.options.appModules.replace(/\\/g, '\\\\') %>')
+    </script>
+    <% } %>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- TODO move in less file -->
+    <style>
+        /*Override style from grid layout */
+        .vue-grid-item.vue-grid-placeholder {
+            background-color: indigo !important;
+        }
 
-                .vue-grid-item.vue-grid-placeholder {
-                    background-color: indigo !important;
-                }
-
-                .sweet-modal {
-                    max-width: 800px !important;
-                }
-            </style>
+        .sweet-modal {
+            max-width: 800px !important;
+        }
+    </style>
 </head>
 
 <body style="height:100%;" >
     <div id="mainView" role="main" >
-
         <edit-modal v-bind:block-context="blockContext" ref="editmodal"> </edit-modal>
-
         <menu-toolbar v-if="isInEditMode" v-bind:presets="presets" v-bind:current-preset="currentPreset"></menu-toolbar>
         <md-button class="md-fab md-fab-bottom-right md-primary" v-if="isInEditMode" @click.native="addBlock">
             <md-icon>add</md-icon>
         </md-button>
         <column-container v-bind:blocks="currentPreset.blocks" v-bind:is-in-edit-mode="isInEditMode">
         </column-container>
-
         <toasted></toasted>
-
     </div>
-
 </body>
-
-</html>
-
-
-</body>
-
 </html>

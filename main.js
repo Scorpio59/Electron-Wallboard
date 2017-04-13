@@ -18,12 +18,22 @@ let win;
 var isInEditMode = true;
 var configFileToSave;
 const defaultConfigFile = path.join(app.getPath('userData'), 'wallboard.config');
+
+/**
+ * toggleMode - Description
+ *
+ * @return {type} Description
+ */
 function toggleMode() {
   isInEditMode = !isInEditMode;
   win.webContents.send('edit-mode', isInEditMode);
 }
 
-/* Configuration Export */
+/**
+ * saveConfig - Configuration Export
+ *
+ * @return {null} null
+ */
 function saveConfig() {
   dialog.showSaveDialog({
     title: 'Export configuration in file',
@@ -37,6 +47,12 @@ function saveConfig() {
   });
 };
 
+/**
+ * Saves the configuration to a file
+ * @param {string} fileName config file name
+ * @param {object} config config
+ * @return {null} null
+ */
 function saveConfigFile(fileName, config) {
   fs.writeFile(fileName, JSON.stringify(config), function (err) {
     if (!err) {
@@ -60,6 +76,15 @@ ipcMain.on('config-sent', (evt, confPresets) => {
 
 // === End Of Export
 /* Configuration Import */
+
+/**
+ * onConfigFileRead - Description
+ *
+ * @param {object} err  Description
+ * @param {object} data Description
+ *
+ * @return {null} Description
+ */
 function onConfigFileRead(err, data) {
   var configuration;
   if (err) throw err;
@@ -67,11 +92,23 @@ function onConfigFileRead(err, data) {
   win.webContents.send('import-config', configuration);
 }
 
+/**
+ * onImportConfig - Description
+ *
+ * @param {string} fileName Description
+ *
+ * @return {null} Description
+ */
 function onImportConfig(fileName) {
   if (!fileName || !fs.existsSync(fileName)) return;
   fs.readFile(fileName, 'utf-8', onConfigFileRead);
 }
 
+/**
+ * importConfig - Description
+ *
+ * @return {null} null
+ */
 function importConfig() {
   dialog.showOpenDialog({
     title: 'Import configuration in file',
