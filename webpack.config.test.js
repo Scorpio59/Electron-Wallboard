@@ -8,6 +8,8 @@ buildConfig.resolve.modules.forEach((relativePath) => {
   }
 });
 
+buildConfig.resolve.modules.push('test');
+
 const testConfig = {
   target: 'node', // in order to ignore built-in modules like path, fs, etc.
   externals: [require('webpack-node-externals')()], // in order to ignore all modules in node_modules folder
@@ -30,6 +32,5 @@ const testConfig = {
     ]
   }
 };
-testConfig.resolve = require('./webpack.config.js').resolve;
-testConfig.resolve.modules.push('test');
+
 module.exports = testConfig;
