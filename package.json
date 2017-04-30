@@ -2,6 +2,9 @@
   "name": "Electron-Wallboard",
   "version": "1.0.0",
   "description": "Application to display many dashboard on a single screen, especially TV",
+  "keywords": [],
+  "author": "Rudy Wahl",
+  "license": "ISC",
   "main": "main.js",
   "scripts": {
     "build": "webpack -p",
@@ -21,11 +24,8 @@
     "appId": "electron.wallboard",
     "productName": "Electron-Wallboard",
     "files": [
-      "dist/*",
-      "dist/index.html",
-      "node_modules/**/*",
-      "main.js",
-      "package.json"
+      "app_dist",
+      "main.js"
     ],
     "win": {
       "target": "nsis"
@@ -38,9 +38,6 @@
     "type": "git",
     "url": "git+https://github.com/Scorpio59/Electron-Wallboard.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/Scorpio59/Electron-Wallboard/issues"
   },

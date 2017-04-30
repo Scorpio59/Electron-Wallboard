@@ -20,10 +20,10 @@ module.exports = {
   },
   output: {
     filename: '[name].js',
-    path: path.join(__dirname, 'dist')
+    path: path.join(__dirname, 'app_dist')
   },
   plugins: [
-    new CleanWebpackPlugin(['dist'], {
+    new CleanWebpackPlugin(['app_dist'], {
       dry: true
     }),
     new WebpackNotifierPlugin({
@@ -60,16 +60,15 @@ module.exports = {
         test: /\.node$/,
         use: 'node-loader'
       },
-*/
       {
-        enforce: 'pre',
         test: /\.vue$/,
-        exclude: /node_modules/,
         use: {
           loader: 'eslint-loader'
-
         }
+        enforce: 'pre',
+        exclude: /node_modules/,
       },
+*/
       {
         test: /\.vue$/,
         use: {
