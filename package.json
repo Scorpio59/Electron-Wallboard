@@ -18,7 +18,9 @@
     "lint:fix": "eslint --fix --format node_modules/eslint-friendly-formatter **/*.js **/*.vue",
     "pack": "build --dir",
     "dist": "build",
-    "postinstall": "install-app-deps"
+    "postinstall": "install-app-deps",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "build": {
     "appId": "electron.wallboard",
@@ -91,7 +93,8 @@
     "vue": "^2.2.4",
     "vue-grid-layout": "^2.1.5",
     "vue-material": "^0.7.1",
-    "vuedals": "^1.1.1"
+    "vuedals": "^1.1.1",
+    "snyk": "^1.192.3"
   },
   "nyc": {
     "include": [
@@ -99,5 +102,6 @@
     ],
     "instrument": false,
     "sourceMap": false
-  }
+  },
+  "snyk": true
 }
