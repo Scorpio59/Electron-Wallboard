@@ -90,7 +90,7 @@
     "lodash": "^4.17.4",
     "nouislider": "^9.2.0",
     "sweet-modal-vue": "^1.0.2",
-    "vue": "^2.2.4",
+    "vue": "^3.0.0",
     "vue-grid-layout": "^2.1.5",
     "vue-material": "^0.7.1",
     "vuedals": "^1.1.1",
